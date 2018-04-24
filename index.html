@@ -630,6 +630,173 @@
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/17/github使用教程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/02/17/github使用教程/" itemprop="url">Git使用教程 -- 新手指南详细图文教程</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-02-17T19:29:07+08:00">
+                2018-02-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="一、GitHub入门"><a href="#一、GitHub入门" class="headerlink" title="一、GitHub入门"></a>一、GitHub入门</h3><p>在讲Git之前，我们先来说说GitHub。什么是GitHub呢？GitHub是通过Git进行版本控制的软件源代码托管服务。在GitHub上，你可以创建管理自己的仓库。除此之外，你还可以查看别人的仓库，GitHub拥有许多别人上传公开的优秀源码，是个学习观摩大神代码的好地方。所以，作为一名合格的开发者，拥有一个GitHub账号必不可少。下面就讲讲GitHub的简单使用。</p>
+<p>第一步：注册GitHub账号，打开<a href="https://github.com/" target="_blank" rel="noopener">https://github.com/</a>注册GitHub账号</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-7bc24b6cc33f6b1c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="注册GitHub"></p>
+<p>第二步：创建新的项目（英文好的可以点下面的read the guide自行查看操作）</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-5facc86cfc34ea76.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="创建项目"></p>
+<p>第三步：填写项目相关信息</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-883ac7fb6b2499f5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="填写项目信息"><br>生成的项目如下图，自带readme文件</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-ce97e398250c92a6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="项目文件"></p>
+<p>第四步：点击上图的绿色按钮，可以选择用https或ssh的方式下载克隆现在的项目。两者的区别是（此处指的是命令行clone，也可以直接点击download ZIP的按钮直接下载项目压缩包）：</p>
+<ul>
+<li>HTTPS：无论是谁，拿到上图那串显示的https的url都可以clone项目，push的时候每次需要验证用户名和密码。</li>
+<li>SSH：每台设备对应一个SSH key，只有将SSH key存在账户里的设备才可以clone该账户下的所有公开项目。clone项目你必须是创建者或者管理员（可在项目里添加），由于设置了SSH key认证，push的时候不需要每次都输入帐号密码。</li>
+</ul>
+<h3 id="二、Git的使用"><a href="#二、Git的使用" class="headerlink" title="二、Git的使用"></a>二、Git的使用</h3><p>第一步：下载Git。</p>
+<p>第二步：新建个文件夹作为工作空间，在该文件夹下鼠标右键，点击Git Bash Here打开控制台。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-2e87c85db87187ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="控制台"></p>
+<p>第三步：clone远程GitHub上的项目（此处以SSH为例）。在GitHub要clone的项目下点击Clone or download，选择Use SSH，复制地址链接（注意SSH地址是git开头的，https开头是HTTP的）。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-46e30b1f1c66193d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="复制SSH地址"></p>
+<p>在刚才打开的控制台里输入git clone “SSH复制的地址”。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-3c233480d37faef2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="clone命令"></p>
+<p>原因是使用SSH进行克隆时要给将电脑的SSH key存在账户中才能clone（注意，设置后该账户下的公开项目都可以被该电脑clone，SSH key对应的是设备和账户的关系，而不是项目和设备的关系）。</p>
+<p>第四步：输入 ssh-keygen -t rsa -b 4096 -C “GitHub邮箱” ，然后一直回车。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-e3726516f993e7ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="获取SSH key"></p>
+<p>执行上述命令之后会在~/.ssh目录下生成了公钥id_rsa.pub和私钥id_rsa，可以通过输入命令检查电脑是否存在SSH key：$ cd ~/.ssh$ ls。（若之前输入该命令后看到电脑存在id_rsa.pub 或 id_dsa.pub 文件，则可以跳过第四五六步）。</p>
+<p>第五步：输入cat ~/.ssh/id_rsa.pub显示这个文件夹的内容（也可直接打开这个文件夹打开文件复制），然后拷贝下面的内容。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-6b104ba49852d746.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="copy电脑的SSH key"></p>
+<p>第六步：如下图，GitHub中点击头像进入账户相关信息设置，设置添加SSH key。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-22b31ccb5f78a082.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="进入账户设置页面"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-ec8a2644e74cb804.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="新增SSH key"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-72be5dc8b7366554.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="添加完成"></p>
+<p>这里要注意，添加的SSH key钥匙ssh-rsa、ssh-dss等开头的，否则会报错，如执行cat ~/.ssh/id_rsa这个指令copy的key会报错（少了个.pub）。 </p>
+<p>第七步：此时再输入clone命令则clone成功，可以看到生成了project且点进去跟GitHub上的一样有个readme文件。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-f608b0b44986b81d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="clone"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-63c91ed1229380bd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="clone成功"></p>
+<p>第八步：我们来新增一个index.html文件。在project文件夹下面右键新建一个文本文档，在文档中输入hello world，保存并重命名“新建文本文档.txt”为“index.html”（提示扩展名会导致不可用按确定即可）</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-5aa6eda941cb1fc1.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="新增index.html"></p>
+<ul>
+<li>附赠用命令行新增文件的命令</li>
+</ul>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-33726ea83cd3d9a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="命令新增文件"></p>
+<p>第九步：提交文件到GitHub远程仓库。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-72064a8f5a9fd57e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="提交到远程仓库"></p>
+<p>第一次提交会要求告知提交者信息，报错如下，输入下面的命令填入邮箱回车，再输入另一条回车即可。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-a0b4e616c2591a0d.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="填写提交者信息"></p>
+<p>第十步：提交成功，可以看到GitHub刚才的项目页面多了index.html。我们可以查看预览，点击红框的settings → options → 下拉到最底下GitHub Pages。</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-8f953b4dc710f7f7.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="查看预览"></p>
+<p><img src="http://upload-images.jianshu.io/upload_images/9901864-ec5aa87645192b86.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="预览页面"></p>
+<p>至此，就是Git和GitHub的入门使用步骤命令了，掌握上述命令简单的上传clone是没问题了，希望对刚入门的小伙伴有帮助。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -676,7 +843,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">posts</span>
                 </a>
               </div>
@@ -684,6 +851,15 @@
 
             
 
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">1</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
             
 
           </nav>
