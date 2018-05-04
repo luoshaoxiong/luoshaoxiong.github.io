@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CSS浅析," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、什么是外边距合并处于同个BFC中的常规文档流（浮动和绝对定位不算）的块级元素，若之间没有空隙或padding、border隔开，他们将发生垂直方向上的外边距（margin）合并。 而且发生外边距最主要原因是两个元素的margin碰到了一起（有些博客称为相邻或邻接），一般有以下几种情况：  父子关系的合并正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓，子">
+<meta name="keywords" content="CSS浅析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS浅析 -- 外边距合并篇">
+<meta property="og:url" content="http://yoursite.com/2018/03/24/CSS浅析 -- 外边距合并篇/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、什么是外边距合并处于同个BFC中的常规文档流（浮动和绝对定位不算）的块级元素，若之间没有空隙或padding、border隔开，他们将发生垂直方向上的外边距（margin）合并。 而且发生外边距最主要原因是两个元素的margin碰到了一起（有些博客称为相邻或邻接），一般有以下几种情况：  父子关系的合并正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓，子">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-154453c05c605a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-6a436498536d6ae3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-ffe82dab89ddc078.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-21c12ea315825930.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-ad056ee357c7b249.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-3756ee7fba767cd8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-2446a76fdde36983.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-05-04T09:42:18.017Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS浅析 -- 外边距合并篇">
+<meta name="twitter:description" content="一、什么是外边距合并处于同个BFC中的常规文档流（浮动和绝对定位不算）的块级元素，若之间没有空隙或padding、border隔开，他们将发生垂直方向上的外边距（margin）合并。 而且发生外边距最主要原因是两个元素的margin碰到了一起（有些博客称为相邻或邻接），一般有以下几种情况：  父子关系的合并正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓，子">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/9901864-154453c05c605a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/24/CSS浅析 -- 外边距合并篇/"/>
+
+
+
+
+
+  <title>CSS浅析 -- 外边距合并篇 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/24/CSS浅析 -- 外边距合并篇/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CSS浅析 -- 外边距合并篇</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-24T18:31:52+08:00">
+                2018-03-24
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、什么是外边距合并"><a href="#一、什么是外边距合并" class="headerlink" title="一、什么是外边距合并"></a>一、什么是外边距合并</h3><p>处于<strong>同个BFC</strong>中的<strong>常规文档流</strong>（浮动和绝对定位不算）的<strong>块级元素</strong>，若之间<strong>没有空隙或padding、border隔开</strong>，他们将发生垂直方向上的外边距（margin）合并。</p>
+<p>而且发生外边距最主要原因是<strong>两个元素的margin碰到了一起</strong>（有些博客称为相邻或邻接），一般有以下几种情况：</p>
+<ol>
+<li>父子关系的合并<br>正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓，子元素就算设置了padding/border父元素没设置，margin还是碰到一起），他们的外边距将发生合并。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-154453c05c605a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="父子外边距合并"></p>
+<ol start="2">
+<li>兄弟关系的合并<br>同个BFC中，两个正常流的兄弟元素会发生外边距合并。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-6a436498536d6ae3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="兄弟外边距合并"></p>
+<ol start="3">
+<li>元素自身的合并<br>当元素自身没有内容，且没有设置border和padding时，他的上下外边距就会碰到一起，从而发生合并。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-ffe82dab89ddc078.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="自身外部距合并"></p>
+<h3 id="二、外边距合并规则"><a href="#二、外边距合并规则" class="headerlink" title="二、外边距合并规则"></a>二、外边距合并规则</h3><ol>
+<li>两个外边距都是正或负数时，折叠结果是两者绝对值之间较大的值，符号不变。</li>
+<li>两个外边距一正一负时，折叠结果是两者的相加的和。</li>
+</ol>
+<h3 id="三、如何阻止外边距合并"><a href="#三、如何阻止外边距合并" class="headerlink" title="三、如何阻止外边距合并"></a>三、如何阻止外边距合并</h3><p>文章开头我们就讲了发生外边距合并的条件:</p>
+<blockquote>
+<p>处于<strong>同个BFC</strong>中的<strong>常规文档流</strong>（浮动和绝对定位不算）的<strong>块级元素</strong>，若之间<strong>没有空隙或padding、border隔开</strong>，他们将发生垂直方向上的外边距（margin）合并。</p>
+</blockquote>
+<p>所以要想解决外边距合并问题，我们可以让上面加粗的四个点随意一个不满足即可，所以有以下四种解决方案（此处以解决父子关系边距合并为例）：</p>
+<ol>
+<li><strong>让两者处于不同BFC下</strong>：此处让父元素变成BFC，原先父子同处于根元素这个BFC下，所以才能发生合并，当父元素触发了BFC后，则子元素在新的BFC下，父元素仍然在根元素的BFC下，所以不在同个BFC中，也就无所谓合并了。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-21c12ea315825930.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="父元素变成BFC解决边距合并"></p>
+<ol start="2">
+<li><strong>让两者其中之一脱离常规文档流</strong>，可以设置浮动或者绝对定位</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-ad056ee357c7b249.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="脱离文档流解决边距合并"></p>
+<ol start="3">
+<li><strong>让两者（此处是父元素或子元素）其中之一变成非块级元素</strong>：因为发生margin合并的条件之一是必须是块元素，所以当两者随意一个变成inline-block之后就没法合并了（对inline元素设置margin-top和margin-bottom本身就不生效，也就没有垂直方向上合并这么一说了）。</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-3756ee7fba767cd8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="变成非块级解决margin合并"></p>
+<ol start="4">
+<li>给父元素<strong>设置padding或者border</strong>分开他们的margin：</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-2446a76fdde36983.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="padding、border解决边距合并"></p>
+<p>同理，解决元素自身的边距合并也可以用上面的四种方法（实际2.3也会触发1）:</p>
+<ol>
+<li>让自身触发BFC。</li>
+<li>让自身脱离文本流。</li>
+<li>变成inline-block。</li>
+<li>给自身设置border或padding。</li>
+</ol>
+<p>对于兄弟外边距合并，一般用以下三种：</p>
+<ol>
+<li>让两者不在同个BFC下。</li>
+<li>让自身脱离文本流。</li>
+<li>变成inline-block。</li>
+</ol>
+<p>之所以少了一种，是因为即使设置了padding或border他们的margin还是会碰在一起。所以又回到开头那句（手动滑稽脸～）：</p>
+<blockquote>
+<p>发生外边距最主要原因是<strong>两个元素的margin碰到了一起</strong>。</p>
+</blockquote>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CSS浅析/" rel="tag"># CSS浅析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/05/crsf攻防/" rel="next" title="CSRF的攻击和防御">
+                <i class="fa fa-chevron-left"></i> CSRF的攻击和防御
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/26/CSS浅析 -- 详细讲讲BFC/" rel="prev" title="CSS浅析 -- 详细讲讲BFC">
+                CSS浅析 -- 详细讲讲BFC <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、什么是外边距合并"><span class="nav-number">1.</span> <span class="nav-text">一、什么是外边距合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、外边距合并规则"><span class="nav-number">2.</span> <span class="nav-text">二、外边距合并规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、如何阻止外边距合并"><span class="nav-number">3.</span> <span class="nav-text">三、如何阻止外边距合并</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

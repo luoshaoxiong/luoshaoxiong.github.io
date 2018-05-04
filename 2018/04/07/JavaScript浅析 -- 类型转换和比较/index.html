@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JavaScript浅析," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="先看看如下几个问题，如果都能答对且知道为什么那么可以不用接着往下看了（当然想要接着看俺是不会拒绝滴哈哈）： 12345678910111213141516console.log(&amp;apos;&amp;apos; == 1); // falseconsole.log(&amp;apos; &amp;apos; == 1); // falseconsole.log(true == 1); // trueconsole.log">
+<meta name="keywords" content="JavaScript浅析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript浅析 -- 类型转换和比较">
+<meta property="og:url" content="http://yoursite.com/2018/04/07/JavaScript浅析 -- 类型转换和比较/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="先看看如下几个问题，如果都能答对且知道为什么那么可以不用接着往下看了（当然想要接着看俺是不会拒绝滴哈哈）： 12345678910111213141516console.log(&amp;apos;&amp;apos; == 1); // falseconsole.log(&amp;apos; &amp;apos; == 1); // falseconsole.log(true == 1); // trueconsole.log">
+<meta property="og:locale" content="default">
+<meta property="og:updated_time" content="2018-05-04T09:47:40.349Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript浅析 -- 类型转换和比较">
+<meta name="twitter:description" content="先看看如下几个问题，如果都能答对且知道为什么那么可以不用接着往下看了（当然想要接着看俺是不会拒绝滴哈哈）： 12345678910111213141516console.log(&amp;apos;&amp;apos; == 1); // falseconsole.log(&amp;apos; &amp;apos; == 1); // falseconsole.log(true == 1); // trueconsole.log">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/07/JavaScript浅析 -- 类型转换和比较/"/>
+
+
+
+
+
+  <title>JavaScript浅析 -- 类型转换和比较 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/07/JavaScript浅析 -- 类型转换和比较/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript浅析 -- 类型转换和比较</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-07T11:07:42+08:00">
+                2018-04-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>先看看如下几个问题，如果都能答对且知道为什么那么可以不用接着往下看了（当然想要接着看俺是不会拒绝滴哈哈）：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">console.log(&apos;&apos; == 1); // false</span><br><span class="line">console.log(&apos; &apos; == 1); // false</span><br><span class="line">console.log(true == 1); // true</span><br><span class="line">console.log(true == &apos;1&apos;); // true</span><br><span class="line">console.log(true == &apos;2&apos;); // false</span><br><span class="line">console.log(&apos; &apos; == true); // false</span><br><span class="line"></span><br><span class="line">console.log(&quot;0&quot; == true); // false</span><br><span class="line">console.log(&quot;0&quot; == false); // true</span><br><span class="line">console.log(&quot;00&quot; == false); // true</span><br><span class="line">console.log(&quot;0.00&quot; == false); // true</span><br><span class="line"></span><br><span class="line">console.log(undefined == null);  // true</span><br><span class="line">console.log(null == &apos;null&apos;); // false</span><br><span class="line">console.log(&#123;&#125; == true);  // false</span><br><span class="line">console.log([] == true);  // false</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var obj = &#123; </span><br><span class="line">  a: 0, </span><br><span class="line">  valueOf: function()&#123;return 1&#125; </span><br><span class="line">&#125; </span><br><span class="line">console.log(obj==&apos;[object Object]&apos;);  // false</span><br><span class="line">console.log(obj==1);  // true</span><br><span class="line">console.log(obj==true);  // true</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">if (&quot;&quot;) &#123;</span><br><span class="line">    console.log(&apos;empty&apos;)</span><br><span class="line">&#125; // 无</span><br><span class="line"></span><br><span class="line">if (&quot; &quot;) &#123;</span><br><span class="line">    console.log(&apos;blank&apos;)</span><br><span class="line">&#125; // blank</span><br><span class="line"></span><br><span class="line">if ([0]) &#123;</span><br><span class="line">    console.log(&apos;array&apos;)</span><br><span class="line">&#125; // array</span><br><span class="line"></span><br><span class="line">if(&apos;0.00&apos;)&#123;</span><br><span class="line">  console.log(&apos;0.00&apos;)</span><br><span class="line">&#125; // 0.00</span><br></pre></td></tr></table></figure>
+<p>相信看了上面的题，一些初学的小伙伴已经开始怀疑人生了，不急不急，我们下面就先讲讲两个知识点，然后最后我们再来一一解析题目，到时候就很好理解了。</p>
+<h3 id="一、数据类型的互相转换"><a href="#一、数据类型的互相转换" class="headerlink" title="一、数据类型的互相转换"></a>一、数据类型的互相转换</h3><p><strong>1. 其他类型转成Number</strong></p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>转为值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>String</td>
+<td>纯数字的字符串转为对应的数字，空字符串和空格字符串是0，其他字符变成NaN</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>true为1，false为0</td>
+</tr>
+<tr>
+<td>Object</td>
+<td>调用valueOf()的返回结果，没有则返回toString()结果，若对象没有valueOf()和toString()则返回NaN</td>
+</tr>
+<tr>
+<td>null</td>
+<td>返回0</td>
+</tr>
+<tr>
+<td>undefined</td>
+<td>返回NaN</td>
+</tr>
+</tbody>
+</table>
+<p>*Number([])返回0，Number([3])返回3，Number([1, 2])返回NaN。</p>
+<p><strong>2. 其他类型转成String</strong></p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>转为值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number</td>
+<td>转为对应数字的字符串形式，NaN是“NaN”</td>
+</tr>
+<tr>
+<td>Boolean</td>
+<td>true为”true”，false为”false”</td>
+</tr>
+<tr>
+<td>Object</td>
+<td>返回toString()的返回值，默认是“[object Object]”</td>
+</tr>
+<tr>
+<td>null</td>
+<td>返回”null”</td>
+</tr>
+<tr>
+<td>undefined</td>
+<td>返回”undefined”</td>
+</tr>
+</tbody>
+</table>
+<p><strong>3. 其他类型转成Boolean</strong></p>
+<table>
+<thead>
+<tr>
+<th>数据类型</th>
+<th>转为true的值</th>
+<th>转为false的值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Number</td>
+<td>任何非零数字（包括无穷大）</td>
+<td>0、-0和NaN</td>
+</tr>
+<tr>
+<td>String</td>
+<td>任何非空字符</td>
+<td>“”（空字符串）</td>
+</tr>
+<tr>
+<td>Object</td>
+<td>任何对象</td>
+<td>无</td>
+</tr>
+<tr>
+<td>null</td>
+<td>无</td>
+<td>null</td>
+</tr>
+<tr>
+<td>undefined</td>
+<td>无</td>
+<td>undefined</td>
+</tr>
+</tbody>
+</table>
+<h3 id="二、数据类型的比较"><a href="#二、数据类型的比较" class="headerlink" title="二、数据类型的比较"></a>二、数据类型的比较</h3><p>首先强调一点，这里所讲的是==比较，而不是===比较，因为只有==在互相比较的时候会进行隐式转换再做比较，而具体规则如下：</p>
+<ol>
+<li>Number、String、Boolean三者的互相比较，都先转换为数字再进行比较。</li>
+<li>Object和其他作比较，调用toPrimitive的返回值进行比较（先尝试调用 .valueOf 方法获取结果。 如果没定义，再尝试调用 .toString方法获取结果）。</li>
+<li>null和undefined的比较不做转换，且null==undefined返回true（null===undefined返回false）。</li>
+<li>NaN不与任何值相等，即使NaN==NaN返回的也是false。</li>
+</ol>
+<h3 id="三、答案解析"><a href="#三、答案解析" class="headerlink" title="三、答案解析"></a>三、答案解析</h3><p>好了，根据上面所讲的两点，现在我们再来看看开始的题目，一一解释下：</p>
+<ol>
+<li>首先看这些题目：<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">console.log(&apos;&apos; == 1); // false</span><br><span class="line">console.log(&apos; &apos; == 1); // false</span><br><span class="line">console.log(true == 1); // true</span><br><span class="line">console.log(true == &apos;1&apos;); // true</span><br><span class="line">console.log(true == &apos;2&apos;); // false</span><br><span class="line">console.log(&apos; &apos; == true); // false</span><br><span class="line"></span><br><span class="line">console.log(&quot;0&quot; == true); // false</span><br><span class="line">console.log(&quot;0&quot; == false); // true</span><br><span class="line">console.log(&quot;00&quot; == false); // true</span><br><span class="line">console.log(&quot;0.00&quot; == false); // true</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>根据<strong>“Number、String、Boolean三者的互相比较，都先转换为数字再进行比较”</strong>，所以上面的几个比较全都会先进行数字转换，而Number(‘’)、Number(‘ ‘)、Number(‘0’)、Number(‘00’)、Number(‘0.00)都是0，Number(true)是1、Number(false)是0。这个时候题目实际上就变成下面这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">console.log(0 == 1); // false</span><br><span class="line">console.log(0 == 1); // false</span><br><span class="line">console.log(1 == 1); // true</span><br><span class="line">console.log(1 == 1); // true</span><br><span class="line">console.log(1 == 2); // false</span><br><span class="line">console.log(0 == 1); // false</span><br><span class="line"></span><br><span class="line">console.log(0 == 1); // false</span><br><span class="line">console.log(0 == 0); // true</span><br><span class="line">console.log(0 == 0); // true</span><br><span class="line">console.log(0 == 0); // true</span><br></pre></td></tr></table></figure></p>
+<p>这样做了转换之后的比较是不是就一目了然了？</p>
+<ol start="2">
+<li>根据比较规则的第2点<strong>“Object和其他作比较，调用toPrimitive的返回值进行比较（先尝试调用 .valueOf 方法获取结果。 如果没定义，再尝试调用 .toString方法获取结果）”</strong>，由于Number({})为NaN，Number([])为0，下面的题目<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">console.log(&#123;&#125; == true);  // false</span><br><span class="line">console.log([] == true);  // false</span><br><span class="line"></span><br><span class="line">var obj = &#123; </span><br><span class="line">  a: 0, </span><br><span class="line">  valueOf: function()&#123;return 1&#125; </span><br><span class="line">&#125; </span><br><span class="line">console.log(obj==&apos;[object Object]&apos;);  // false</span><br><span class="line">console.log(obj==1);  // true</span><br><span class="line">console.log(obj==true);  // true</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>就变成<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">console.log(NaN == 1);  // false</span><br><span class="line">console.log(0 == 1);  // false</span><br><span class="line"></span><br><span class="line">var obj = &#123; </span><br><span class="line">  a: 0, </span><br><span class="line">  valueOf: function()&#123;return 1&#125; </span><br><span class="line">&#125; </span><br><span class="line">console.log(1 == NaN);  // false</span><br><span class="line">console.log(1 == 1);  // true</span><br><span class="line">console.log(1 == 1);  // true</span><br></pre></td></tr></table></figure></p>
+<ol start="3">
+<li><p>根据转换规则第3点<strong>“null和undefined的比较不做转换，且null==undefined返回true”</strong>，下面就不用解释了吧？</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(undefined == null);  // true</span><br><span class="line">console.log(null == &apos;null&apos;); // false</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>而对于这种if的判断，我们可以直接转换成Boolean。由于任何对象和任何非空字符串的布尔值都是true，有Boolean(‘’)为false，Boolean(‘ ‘)、Boolean([0])、Boolean({})为true。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">if (&quot;&quot;) &#123;</span><br><span class="line">    console.log(&apos;empty&apos;)</span><br><span class="line">&#125; // 无</span><br><span class="line"></span><br><span class="line">if (&quot; &quot;) &#123;</span><br><span class="line">    console.log(&apos;blank&apos;)</span><br><span class="line">&#125; // blank</span><br><span class="line"></span><br><span class="line">if ([0]) &#123;</span><br><span class="line">    console.log(&apos;array&apos;)</span><br><span class="line">&#125; // array</span><br><span class="line"></span><br><span class="line">if(&apos;0.00&apos;)&#123;</span><br><span class="line">  console.log(&apos;0.00&apos;)</span><br><span class="line">&#125; // 0.00</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>最后补充两道题：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(!&quot; &quot; == true);  // false</span><br><span class="line">console.log(!&quot; &quot; == false);  // true</span><br></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>由于“!取反”的优先级高于“==”，所以先做布尔转化，有Boolean(“ “)为true，!Boolean(“ “)为false。则转化成如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">console.log(false == true);  // false</span><br><span class="line">console.log(false == false);  // true</span><br></pre></td></tr></table></figure></p>
+<p>此时由于是两个布尔值做比较所以就不用再做转化数字的操作拉~</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript浅析/" rel="tag"># JavaScript浅析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/27/CSS浅析 -- 浮动篇/" rel="next" title="CSS浅析 -- 浮动篇">
+                <i class="fa fa-chevron-left"></i> CSS浅析 -- 浮动篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/04/11/JavaScript浅析 -- 作用域和作用域链/" rel="prev" title="JavaScript浅析 -- 作用域和作用域链">
+                JavaScript浅析 -- 作用域和作用域链 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、数据类型的互相转换"><span class="nav-number">1.</span> <span class="nav-text">一、数据类型的互相转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、数据类型的比较"><span class="nav-number">2.</span> <span class="nav-text">二、数据类型的比较</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、答案解析"><span class="nav-number">3.</span> <span class="nav-text">三、答案解析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CSS浅析," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、什么是BFCBFC，全称Block Formatting Context，即块级格式上下文。我的理解，它其实就是页面上的一块渲染区域，有自己的渲染规则，指定了自己的子元素的定位和相互关系。我们先来看看W3C里对它的定义：   浮动元素和绝对定位元素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为">
+<meta name="keywords" content="CSS浅析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CSS浅析 -- 详细讲讲BFC">
+<meta property="og:url" content="http://yoursite.com/2018/03/26/CSS浅析 -- 详细讲讲BFC/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、什么是BFCBFC，全称Block Formatting Context，即块级格式上下文。我的理解，它其实就是页面上的一块渲染区域，有自己的渲染规则，指定了自己的子元素的定位和相互关系。我们先来看看W3C里对它的定义：   浮动元素和绝对定位元素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-51c14e35ffd903a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-b2fbab84046e47c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-a561a0183b4b42be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-ed154d854b888894.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-41ec129a9585c57b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-50b43d35e291b9aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-05-04T09:41:51.649Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="CSS浅析 -- 详细讲讲BFC">
+<meta name="twitter:description" content="一、什么是BFCBFC，全称Block Formatting Context，即块级格式上下文。我的理解，它其实就是页面上的一块渲染区域，有自己的渲染规则，指定了自己的子元素的定位和相互关系。我们先来看看W3C里对它的定义：   浮动元素和绝对定位元素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/9901864-51c14e35ffd903a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/26/CSS浅析 -- 详细讲讲BFC/"/>
+
+
+
+
+
+  <title>CSS浅析 -- 详细讲讲BFC | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/26/CSS浅析 -- 详细讲讲BFC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">CSS浅析 -- 详细讲讲BFC</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-03-26T21:42:37+08:00">
+                2018-03-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、什么是BFC"><a href="#一、什么是BFC" class="headerlink" title="一、什么是BFC"></a>一、什么是BFC</h3><p>BFC，全称Block Formatting Context，即块级格式上下文。我的理解，它其实就是页面上的一块渲染区域，有自己的渲染规则，指定了自己的子元素的定位和相互关系。我们先来看看W3C里对它的定义：</p>
+<blockquote>
+<ul>
+<li>浮动元素和绝对定位元素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为“visiable”的块级盒子，都会为他们的内容创建新的BFC（块级格式上下文）。</li>
+<li>在BFC中，盒子从顶端开始垂直地一个接一个地排列，两个盒子之间的垂直的间隙是由他们的margin 值所决定的。在一个BFC中，两个相邻的块级盒子的垂直外边距会产生折叠。</li>
+<li>在BFC中，每一个盒子的左外边缘（margin-left）会触碰到容器的左边缘(border-left)（对于从右到左的格式来说，则触碰到右边缘）。</li>
+</ul>
+</blockquote>
+<p>上面这段刚开始我也是看的晕晕乎乎的，现在把它分解成下面六点来解读（我习惯记忆为<strong>一要点二浮动三子元素</strong>）：</p>
+<ol>
+<li>BFC就是页面上的一个隔离的独立布局环境，可以想象（注意它并不是一个元素）为一个容器，容器里面的子元素不会影响到外面元素，而BFC外的元素也不会干扰到内部的元素。</li>
+<li>计算BFC的高度时，浮动子元素也参与计算。</li>
+<li>BFC的区域不会与float的元素区域重叠。</li>
+<li>在BFC内部的盒子会在垂直方向上一个接一个的放置。</li>
+<li>每个元素的左外边距与包含块的左边界相接触（对于从右到左的格式来说，则触碰到右边缘），即使浮动元素也是如此。</li>
+<li>属于同一个BFC的两个相邻盒子的margin会发生合并。</li>
+</ol>
+<ul>
+<li>第一点讲的是BFC最主要的特征。他的特征就是<strong>一个独立环境，内外互不影响</strong>。无论内部如何进行布局浮动等，都不会影响到外部元素的排版，同样外部也无法跨越这个BFC对其里面产生影响。</li>
+<li>第二和三是关于浮动的。先讲第二点，当一个普通的块级元素包含浮动元素时，<strong>这个普通的块级元素由于感知不到该浮动子元素的存在，会发生高度坍塌</strong>。而当这个块级元素触发BFC之后（下面会将如何触发BFC），他的高度就会把浮动元素的高度计算进去，而不再发生坍塌。所以也可以利用这点来清除浮动。</li>
+<li>第三点是相对于外面的浮动元素来讲。同样的，由于非浮动的块级元素无法感知浮动元素的存在，所以当布局中已经存在一个浮动元素，此时再生成一个块级元素时，<strong>块级元素会当作那个区域没有其他元素仍旧放上去，两者就会发生重叠</strong>。但如果这个块级元素转换为BFC之后，则能感知浮动元素的存在，则直接放置在浮动元素之后，而不再发生重叠。</li>
+<li>第四五六是关于BFC的内部元素布局和相互关系的。先看看第四点，其实这点很简单明了，由于根元素本身也满足BFC，所以平时我们看到的布局也是满足第四点的，也是从上往下的一行一行放置，一行满了再下一行。</li>
+<li>第五点：盒模型的几个要素包括margin、border、padding和content，而第五点讲的每个元素的左外边距（margin）与包含块的左边界（border）相接触，也就是说<strong>所有内部元素（包括他们的margin）都被圈在父元素的border内部的</strong>，当父元素满足BFC时，<strong>父元素的margin也不再与内部元素的margin发生合并，内部元素也无法再超出父元素</strong>（除非子元素设置了absolute则可以超出，因为若子元素设置了absolute若要相对父元素则父元素要设置了relative就不再满足BFC，若父元素不设置relative则此时子元素不再认为他是父亲而一层层往上找到另一个设置了relative的父元素）。</li>
+<li>而第六点的margin合并，想了解详细的可以看这篇<a href="https://www.jianshu.com/p/5dced0ab97ff" target="_blank" rel="noopener">文章</a>。</li>
+</ul>
+<h3 id="二、怎么触发BFC"><a href="#二、怎么触发BFC" class="headerlink" title="二、怎么触发BFC"></a>二、怎么触发BFC</h3><ol>
+<li>position除relative以外的值（absolute，fixed）。</li>
+<li>display为inline-block, table-cell, table-caption, flex,inline-flex其中之一值。</li>
+<li>float除none以外的值。</li>
+<li>overflow除visible以外的值（hidden，auto，scroll）。</li>
+<li>根元素。</li>
+</ol>
+<p>设置上面的属性的时候也要注意结合本身需求，比如为了触发BFC可以设置overflow:hidden，但也会导致一些悬浮超出的内容无法显示。此处介绍一个css的新属性值，display:flow-root，这个值就是专门设置元素触发BFC的，而且不会带来副作用，所以还是比较好用，不过一些旧版本浏览器可能无法支持。</p>
+<h3 id="三、BFC有什么用"><a href="#三、BFC有什么用" class="headerlink" title="三、BFC有什么用"></a>三、BFC有什么用</h3><ol>
+<li>清浮动<br>正如上面第二点讲到的 “<strong>计算BFC的高度时，浮动子元素也参与计算</strong>“ ，所以我们可以用BFC来解决浮动导致的父元素高度坍塌问题。例子如下：</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-51c14e35ffd903a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="浮动带来的高度坍塌"></p>
+<p>当子元素设置浮动时，父元素会感知不到内部子元素的存在，发生高度坍塌。如下图，父元素没有显示（若显示背景色应该为灰色）。当我们给父元素加个overflow:hidden使父元素触发BFC时，此时父元素的高度就不再为0而是计算包含了浮动元素的高度。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-b2fbab84046e47c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BFC清浮动"></p>
+<ol start="2">
+<li>解决重叠问题（实现两栏布局等）<br>根据上面的第三点，”<strong>BFC的区域不会与float的元素区域重叠</strong>“，所以我们可以用BFC来解决由于浮动元素无法感知普通块级元素带来的重叠问题。例子如下：</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-a561a0183b4b42be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="浮动重叠问题"></p>
+<p>如图，由于普通块级元素（灰色）无法感知到浮动元素（绿色）的存在，所以渲染的时候仍然从左上角顶点开始渲染，而浮动元素盖在了上面发生了重叠。而当设置了overflow:hidden触发BFC之后，由于BFC的区域不会与float的元素区域重叠，所以渲染的时候则避开了绿色浮动块，从而实现了两栏布局。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-ed154d854b888894.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BFC解决重叠问题"></p>
+<ol start="3">
+<li>解决边距合并问题（可以先看看我的这篇<a href="https://www.jianshu.com/p/5dced0ab97ff" target="_blank" rel="noopener">文章</a>）<br>其实上面的第五点解读就可以看出，当父元素触发了BFC之后，父子元素就不会再发生外边距合并。而边距合并不止发生在父子间，还有兄弟间和元素自身，而发生边距合并的条件之一<strong>必须在同一个BFC</strong>下，所以我们可以通过让两个发生边距合并的元素<strong>处于不同BFC</strong>来解决边距合并问题。例子如下：</li>
+</ol>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-41ec129a9585c57b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="边距合并"></p>
+<p>上面绿色块元素的margin-bottom:30px下面的margin-top:30px，按道理两者间的间距应该为60px，但实际却只有30px。这是因为BFC的第6点”<strong>属于同一个BFC的两个相邻盒子的margin会发生合并</strong>“，所以我们只要使其中一个元素触发新的BFC则两者不在同个BFC下自然就不合并了。</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-50b43d35e291b9aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BFC解决边距合并"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CSS浅析/" rel="tag"># CSS浅析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/24/CSS浅析 -- 外边距合并篇/" rel="next" title="CSS浅析 -- 外边距合并篇">
+                <i class="fa fa-chevron-left"></i> CSS浅析 -- 外边距合并篇
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/27/CSS浅析 -- 浮动篇/" rel="prev" title="CSS浅析 -- 浮动篇">
+                CSS浅析 -- 浮动篇 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、什么是BFC"><span class="nav-number">1.</span> <span class="nav-text">一、什么是BFC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、怎么触发BFC"><span class="nav-number">2.</span> <span class="nav-text">二、怎么触发BFC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、BFC有什么用"><span class="nav-number">3.</span> <span class="nav-text">三、BFC有什么用</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

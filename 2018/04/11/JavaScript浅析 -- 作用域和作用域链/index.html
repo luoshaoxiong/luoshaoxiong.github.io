@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JavaScript浅析," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、作用域所谓作用域，简单来说就是变量和函数的可访问范围。举个例子：12345function test() &amp;#123;	var a = 1;	console.log(a); // 输出1&amp;#125;console.log(a); // 会报错，找不到a 上面test函数中的变量a拥有一个函数作用域，只能在函数里可以访问到，但在函数外面console.log(a)则访问不到会报错。 JS有两个作">
+<meta name="keywords" content="JavaScript浅析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript浅析 -- 作用域和作用域链">
+<meta property="og:url" content="http://yoursite.com/2018/04/11/JavaScript浅析 -- 作用域和作用域链/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="一、作用域所谓作用域，简单来说就是变量和函数的可访问范围。举个例子：12345function test() &amp;#123;	var a = 1;	console.log(a); // 输出1&amp;#125;console.log(a); // 会报错，找不到a 上面test函数中的变量a拥有一个函数作用域，只能在函数里可以访问到，但在函数外面console.log(a)则访问不到会报错。 JS有两个作">
+<meta property="og:locale" content="default">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-5ef0ffe9f08a3cba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-8af133c2d57b05c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:updated_time" content="2018-05-04T09:48:53.449Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript浅析 -- 作用域和作用域链">
+<meta name="twitter:description" content="一、作用域所谓作用域，简单来说就是变量和函数的可访问范围。举个例子：12345function test() &amp;#123;	var a = 1;	console.log(a); // 输出1&amp;#125;console.log(a); // 会报错，找不到a 上面test函数中的变量a拥有一个函数作用域，只能在函数里可以访问到，但在函数外面console.log(a)则访问不到会报错。 JS有两个作">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/9901864-5ef0ffe9f08a3cba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/04/11/JavaScript浅析 -- 作用域和作用域链/"/>
+
+
+
+
+
+  <title>JavaScript浅析 -- 作用域和作用域链 | Hexo</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="default">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Hexo</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Home
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archives
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/JavaScript浅析 -- 作用域和作用域链/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="John Doe">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Hexo">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript浅析 -- 作用域和作用域链</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Posted on</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-04-11T20:54:07+08:00">
+                2018-04-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、作用域"><a href="#一、作用域" class="headerlink" title="一、作用域"></a>一、作用域</h3><p>所谓作用域，简单来说就是变量和函数的可访问范围。举个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function test() &#123;</span><br><span class="line">	var a = 1;</span><br><span class="line">	console.log(a); // 输出1</span><br><span class="line">&#125;</span><br><span class="line">console.log(a); // 会报错，找不到a</span><br></pre></td></tr></table></figure></p>
+<p>上面test函数中的变量a拥有一个函数作用域，只能在函数里可以访问到，但在函数外面<code>console.log(a)</code>则访问不到会报错。</p>
+<p>JS有两个作用域，全局作用域和局部作用域（又叫函数作用域）。</p>
+<ol>
+<li><p>局部作用域：<strong>只在某个特定的代码块里才能访问</strong>。比如开头的例子变量a，只能在函数包裹起来的那块内部区域里能被访问。常见于函数内部，如下的形式中从 ‘{’ 开始到与之匹配的 ‘}’ 结束，for、if、switch等包裹起来的不算。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function test() &#123; </span><br><span class="line">    // 局部作用域</span><br><span class="line">&#125;</span><br><span class="line">或者</span><br><span class="line">var test = function() &#123;</span><br><span class="line">    // 局部作用域</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>全局作用域：<strong>在代码中所有地方都能够访问其中变量和函数的作用范围</strong>。有下面三种情况可以拥有全局作用域：</p>
+</li>
+</ol>
+<ul>
+<li>最外层函数和最外层函数之外定义的变量拥有全局作用域。</li>
+<li>未定义直接赋值的对象自动变为全局变量，拥有全局作用域。</li>
+<li>window对象的所有属性拥有全局作用域。<h3 id="二、作用域链"><a href="#二、作用域链" class="headerlink" title="二、作用域链"></a>二、作用域链</h3>在讲作用域链前，我们先来讲讲变量对象。</li>
+<li>变量对象：<strong>每个函数都有自己的执行环境，每个环境都有与之关联的变量对象，执行环境中定义的变量和函数都保存在这个对象中。</strong>由于在同个执行环境里定义的变量和函数拥有相同的作用域，所以同个变量对象里保存的变量和函数拥有相同的作用域。（在web浏览器中，全局执行环境对应的变量对象为window对象，所以如上面所说window对象的属性才会有全局作用域）。</li>
+</ul>
+<p>而代码在环境中执行时，会创建变量对象的一个作用域链。<strong>作用域链的前端，是当前执行代码所在环境的变量对象</strong>，然后是包含环境（即当前函数所在的执行环境）的变量对象，一直延续到全局执行环境，<strong>即全局环境的变量对象始终是作用域链中的最后一个对象</strong>。举个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var outVariable = &apos;最外层变量&apos;;</span><br><span class="line">function outFunction() &#123; // 最外层函数</span><br><span class="line">    var innerVariable = &apos;内部变量&apos;;</span><br><span class="line">    function innerFunction() &#123; // 内部函数</span><br><span class="line">        var variable = &apos;内部函数的变量&apos;;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>上面这个例子，在inner函数的执行环境中的作用域链如下：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-5ef0ffe9f08a3cba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="作用域链"></p>
+<p>由图可以看到，作用域链的开头是当前执行代码所在环境的变量对象，末尾是全局变量对象。</p>
+<p>那作用域链有什么用？作用域链的用途，是保证对执行环境<strong>有权</strong>访问的所有变量和函数的<strong>有序</strong>访问。要理解这句话，重点在于理解有权和有序这两个字。</p>
+<ul>
+<li>有权：只有在当前执行环境的作用域链上变量对象的变量和函数才能访问到。</li>
+<li>有序：当查找一个变量时，先在当前的变量对象里找，找不到再到作用域链的上一个变量对象中找，一直到作用域链的末尾即全局变量对象，如果还没有则报错。</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var outVariable = &apos;最外层变量&apos;;</span><br><span class="line">function outFunction() &#123;</span><br><span class="line">    function firstFunc() &#123;</span><br><span class="line">        var firstFuncVariable = &apos;第一个函数的变量&apos;;</span><br><span class="line">        console.log(outVariable); // 输出&apos;最外层变量&apos;</span><br><span class="line">    &#125; </span><br><span class="line">    function secondFunc() &#123;</span><br><span class="line">        var secondFuncVariable = &apos;第二个函数的变量&apos;;</span><br><span class="line">        console.log(firstFuncVariable); // 报错</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码中函数firstFunc和函数secondFunc的作用域链分别为：</p>
+<p><img src="https://upload-images.jianshu.io/upload_images/9901864-8af133c2d57b05c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="作用域链例子"></p>
+<p>根据上图，当第一个函数要访问outVariable变量时，先找1里有没有，没有再找2里也没有，再找3找到outVariable则返回。而第二个函数要访问firstFuncVariable时，先找4没有，再找5没有，最后找到6还没有所以报错，这个一层一层的搜索就是沿着作用域链的<strong>顺序</strong>来的。而secondFunc的作用域链上并没有firstFunc的变量对象，所以<strong>无权</strong>访问其中的变量。</p>
+<p><a href="https://juejin.im/entry/57f5d492bf22ec006475238f" target="_blank" rel="noopener">https://juejin.im/entry/57f5d492bf22ec006475238f</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript浅析/" rel="tag"># JavaScript浅析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/07/JavaScript浅析 -- 类型转换和比较/" rel="next" title="JavaScript浅析 -- 类型转换和比较">
+                <i class="fa fa-chevron-left"></i> JavaScript浅析 -- 类型转换和比较
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Table of Contents
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Overview
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">John Doe</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">posts</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">tags</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、作用域"><span class="nav-number">1.</span> <span class="nav-text">一、作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、作用域链"><span class="nav-number">2.</span> <span class="nav-text">二、作用域链</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">John Doe</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Powered by <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
