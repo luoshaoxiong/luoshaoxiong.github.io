@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-ed154d854b888894.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-41ec129a9585c57b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-50b43d35e291b9aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-05-04T09:41:51.649Z">
+<meta property="og:updated_time" content="2018-06-05T13:56:28.672Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CSS浅析 -- 详细讲讲BFC">
 <meta name="twitter:description" content="一、什么是BFCBFC，全称Block Formatting Context，即块级格式上下文。我的理解，它其实就是页面上的一块渲染区域，有自己的渲染规则，指定了自己的子元素的定位和相互关系。我们先来看看W3C里对它的定义：   浮动元素和绝对定位元素，非块级盒子的块级容器（例如 inline-blocks, table-cells, 和 table-captions），以及overflow值不为">
@@ -345,21 +345,15 @@
 <li>根元素。</li>
 </ol>
 <p>设置上面的属性的时候也要注意结合本身需求，比如为了触发BFC可以设置overflow:hidden，但也会导致一些悬浮超出的内容无法显示。此处介绍一个css的新属性值，display:flow-root，这个值就是专门设置元素触发BFC的，而且不会带来副作用，所以还是比较好用，不过一些旧版本浏览器可能无法支持。</p>
-<h3 id="三、BFC有什么用"><a href="#三、BFC有什么用" class="headerlink" title="三、BFC有什么用"></a>三、BFC有什么用</h3><ol>
-<li>清浮动<br>正如上面第二点讲到的 “<strong>计算BFC的高度时，浮动子元素也参与计算</strong>“ ，所以我们可以用BFC来解决浮动导致的父元素高度坍塌问题。例子如下：</li>
-</ol>
+<h3 id="三、BFC有什么用"><a href="#三、BFC有什么用" class="headerlink" title="三、BFC有什么用"></a>三、BFC有什么用</h3><h5 id="1-清浮动"><a href="#1-清浮动" class="headerlink" title="1.清浮动"></a>1.清浮动</h5><p>正如上面第二点讲到的 “<strong>计算BFC的高度时，浮动子元素也参与计算</strong>“ ，所以我们可以用BFC来解决浮动导致的父元素高度坍塌问题。例子如下：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-51c14e35ffd903a5.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="浮动带来的高度坍塌"></p>
 <p>当子元素设置浮动时，父元素会感知不到内部子元素的存在，发生高度坍塌。如下图，父元素没有显示（若显示背景色应该为灰色）。当我们给父元素加个overflow:hidden使父元素触发BFC时，此时父元素的高度就不再为0而是计算包含了浮动元素的高度。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-b2fbab84046e47c4.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BFC清浮动"></p>
-<ol start="2">
-<li>解决重叠问题（实现两栏布局等）<br>根据上面的第三点，”<strong>BFC的区域不会与float的元素区域重叠</strong>“，所以我们可以用BFC来解决由于浮动元素无法感知普通块级元素带来的重叠问题。例子如下：</li>
-</ol>
+<h5 id="2-解决重叠问题（实现两栏布局等）"><a href="#2-解决重叠问题（实现两栏布局等）" class="headerlink" title="2.解决重叠问题（实现两栏布局等）"></a>2.解决重叠问题（实现两栏布局等）</h5><p>根据上面的第三点，”<strong>BFC的区域不会与float的元素区域重叠</strong>“，所以我们可以用BFC来解决由于浮动元素无法感知普通块级元素带来的重叠问题。例子如下：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-a561a0183b4b42be.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="浮动重叠问题"></p>
 <p>如图，由于普通块级元素（灰色）无法感知到浮动元素（绿色）的存在，所以渲染的时候仍然从左上角顶点开始渲染，而浮动元素盖在了上面发生了重叠。而当设置了overflow:hidden触发BFC之后，由于BFC的区域不会与float的元素区域重叠，所以渲染的时候则避开了绿色浮动块，从而实现了两栏布局。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-ed154d854b888894.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BFC解决重叠问题"></p>
-<ol start="3">
-<li>解决边距合并问题（可以先看看我的这篇<a href="https://www.jianshu.com/p/5dced0ab97ff" target="_blank" rel="noopener">文章</a>）<br>其实上面的第五点解读就可以看出，当父元素触发了BFC之后，父子元素就不会再发生外边距合并。而边距合并不止发生在父子间，还有兄弟间和元素自身，而发生边距合并的条件之一<strong>必须在同一个BFC</strong>下，所以我们可以通过让两个发生边距合并的元素<strong>处于不同BFC</strong>来解决边距合并问题。例子如下：</li>
-</ol>
+<h5 id="3-解决边距合并问题（可以先看看我的这篇文章）"><a href="#3-解决边距合并问题（可以先看看我的这篇文章）" class="headerlink" title="3.解决边距合并问题（可以先看看我的这篇文章）"></a>3.解决边距合并问题（可以先看看我的这篇<a href="https://www.jianshu.com/p/5dced0ab97ff" target="_blank" rel="noopener">文章</a>）</h5><p>其实上面的第五点解读就可以看出，当父元素触发了BFC之后，父子元素就不会再发生外边距合并。而边距合并不止发生在父子间，还有兄弟间和元素自身，而发生边距合并的条件之一<strong>必须在同一个BFC</strong>下，所以我们可以通过让两个发生边距合并的元素<strong>处于不同BFC</strong>来解决边距合并问题。例子如下：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-41ec129a9585c57b.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="边距合并"></p>
 <p>上面绿色块元素的margin-bottom:30px下面的margin-top:30px，按道理两者间的间距应该为60px，但实际却只有30px。这是因为BFC的第6点”<strong>属于同一个BFC的两个相邻盒子的margin会发生合并</strong>“，所以我们只要使其中一个元素触发新的BFC则两者不在同个BFC下自然就不合并了。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-50b43d35e291b9aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="BFC解决边距合并"></p>
@@ -486,7 +480,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -532,7 +526,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、什么是BFC"><span class="nav-number">1.</span> <span class="nav-text">一、什么是BFC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、怎么触发BFC"><span class="nav-number">2.</span> <span class="nav-text">二、怎么触发BFC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、BFC有什么用"><span class="nav-number">3.</span> <span class="nav-text">三、BFC有什么用</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、什么是BFC"><span class="nav-number">1.</span> <span class="nav-text">一、什么是BFC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、怎么触发BFC"><span class="nav-number">2.</span> <span class="nav-text">二、怎么触发BFC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、BFC有什么用"><span class="nav-number">3.</span> <span class="nav-text">三、BFC有什么用</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-清浮动"><span class="nav-number">3.0.1.</span> <span class="nav-text">1.清浮动</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-解决重叠问题（实现两栏布局等）"><span class="nav-number">3.0.2.</span> <span class="nav-text">2.解决重叠问题（实现两栏布局等）</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-解决边距合并问题（可以先看看我的这篇文章）"><span class="nav-number">3.0.3.</span> <span class="nav-text">3.解决边距合并问题（可以先看看我的这篇文章）</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

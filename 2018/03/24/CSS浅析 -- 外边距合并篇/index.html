@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="一、什么是外边距合并处于同个BFC中的常规文档流（浮动和绝对定位不算）的块级元素，若之间没有空隙或padding、border隔开，他们将发生垂直方向上的外边距（margin）合并。 而且发生外边距最主要原因是两个元素的margin碰到了一起（有些博客称为相邻或邻接），一般有以下几种情况：  父子关系的合并正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓，子">
+<meta name="description" content="一、什么是外边距合并处于同个BFC中的常规文档流（浮动和绝对定位不算）的块级元素，若之间没有空隙或padding、border隔开，他们将发生垂直方向上的外边距（margin）合并。 而且发生外边距最主要原因是两个元素的margin碰到了一起（有些博客称为相邻或邻接），一般有以下几种情况： 1. 父子关系的合并正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓">
 <meta name="keywords" content="CSS浅析">
 <meta property="og:type" content="article">
 <meta property="og:title" content="CSS浅析 -- 外边距合并篇">
 <meta property="og:url" content="http://yoursite.com/2018/03/24/CSS浅析 -- 外边距合并篇/index.html">
 <meta property="og:site_name" content="罗少雄&#39;s Blog">
-<meta property="og:description" content="一、什么是外边距合并处于同个BFC中的常规文档流（浮动和绝对定位不算）的块级元素，若之间没有空隙或padding、border隔开，他们将发生垂直方向上的外边距（margin）合并。 而且发生外边距最主要原因是两个元素的margin碰到了一起（有些博客称为相邻或邻接），一般有以下几种情况：  父子关系的合并正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓，子">
+<meta property="og:description" content="一、什么是外边距合并处于同个BFC中的常规文档流（浮动和绝对定位不算）的块级元素，若之间没有空隙或padding、border隔开，他们将发生垂直方向上的外边距（margin）合并。 而且发生外边距最主要原因是两个元素的margin碰到了一起（有些博客称为相邻或邻接），一般有以下几种情况： 1. 父子关系的合并正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-154453c05c605a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-6a436498536d6ae3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
@@ -94,10 +94,10 @@
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-ad056ee357c7b249.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-3756ee7fba767cd8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 <meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-2446a76fdde36983.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-05-04T09:42:18.017Z">
+<meta property="og:updated_time" content="2018-06-05T13:57:48.828Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="CSS浅析 -- 外边距合并篇">
-<meta name="twitter:description" content="一、什么是外边距合并处于同个BFC中的常规文档流（浮动和绝对定位不算）的块级元素，若之间没有空隙或padding、border隔开，他们将发生垂直方向上的外边距（margin）合并。 而且发生外边距最主要原因是两个元素的margin碰到了一起（有些博客称为相邻或邻接），一般有以下几种情况：  父子关系的合并正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓，子">
+<meta name="twitter:description" content="一、什么是外边距合并处于同个BFC中的常规文档流（浮动和绝对定位不算）的块级元素，若之间没有空隙或padding、border隔开，他们将发生垂直方向上的外边距（margin）合并。 而且发生外边距最主要原因是两个元素的margin碰到了一起（有些博客称为相邻或邻接），一般有以下几种情况： 1. 父子关系的合并正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓">
 <meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/9901864-154453c05c605a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
 
 
@@ -315,17 +315,11 @@
       
         <h3 id="一、什么是外边距合并"><a href="#一、什么是外边距合并" class="headerlink" title="一、什么是外边距合并"></a>一、什么是外边距合并</h3><p>处于<strong>同个BFC</strong>中的<strong>常规文档流</strong>（浮动和绝对定位不算）的<strong>块级元素</strong>，若之间<strong>没有空隙或padding、border隔开</strong>，他们将发生垂直方向上的外边距（margin）合并。</p>
 <p>而且发生外边距最主要原因是<strong>两个元素的margin碰到了一起</strong>（有些博客称为相邻或邻接），一般有以下几种情况：</p>
-<ol>
-<li>父子关系的合并<br>正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓，子元素就算设置了padding/border父元素没设置，margin还是碰到一起），他们的外边距将发生合并。</li>
-</ol>
+<h5 id="1-父子关系的合并"><a href="#1-父子关系的合并" class="headerlink" title="1. 父子关系的合并"></a>1. 父子关系的合并</h5><p>正常文本流中的父元素和子元素，若父元素没有padding和border隔开（子元素无所谓，子元素就算设置了padding/border父元素没设置，margin还是碰到一起），他们的外边距将发生合并。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-154453c05c605a95.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="父子外边距合并"></p>
-<ol start="2">
-<li>兄弟关系的合并<br>同个BFC中，两个正常流的兄弟元素会发生外边距合并。</li>
-</ol>
+<h5 id="2-兄弟关系的合并"><a href="#2-兄弟关系的合并" class="headerlink" title="2. 兄弟关系的合并"></a>2. 兄弟关系的合并</h5><p>同个BFC中，两个正常流的兄弟元素会发生外边距合并。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-6a436498536d6ae3.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="兄弟外边距合并"></p>
-<ol start="3">
-<li>元素自身的合并<br>当元素自身没有内容，且没有设置border和padding时，他的上下外边距就会碰到一起，从而发生合并。</li>
-</ol>
+<h5 id="3-元素自身的合并"><a href="#3-元素自身的合并" class="headerlink" title="3. 元素自身的合并"></a>3. 元素自身的合并</h5><p>当元素自身没有内容，且没有设置border和padding时，他的上下外边距就会碰到一起，从而发生合并。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-ffe82dab89ddc078.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="自身外部距合并"></p>
 <h3 id="二、外边距合并规则"><a href="#二、外边距合并规则" class="headerlink" title="二、外边距合并规则"></a>二、外边距合并规则</h3><ol>
 <li>两个外边距都是正或负数时，折叠结果是两者绝对值之间较大的值，符号不变。</li>
@@ -335,22 +329,13 @@
 <blockquote>
 <p>处于<strong>同个BFC</strong>中的<strong>常规文档流</strong>（浮动和绝对定位不算）的<strong>块级元素</strong>，若之间<strong>没有空隙或padding、border隔开</strong>，他们将发生垂直方向上的外边距（margin）合并。</p>
 </blockquote>
-<p>所以要想解决外边距合并问题，我们可以让上面加粗的四个点随意一个不满足即可，所以有以下四种解决方案（此处以解决父子关系边距合并为例）：</p>
-<ol>
-<li><strong>让两者处于不同BFC下</strong>：此处让父元素变成BFC，原先父子同处于根元素这个BFC下，所以才能发生合并，当父元素触发了BFC后，则子元素在新的BFC下，父元素仍然在根元素的BFC下，所以不在同个BFC中，也就无所谓合并了。</li>
-</ol>
+<p>所以要想解决外边距合并问题，我们可以让上面加粗的四个点随意一个不满足即可，所以有以下四种解决方案（此处以解决父子关系边距合并为例）：<br>1.<strong>让两者处于不同BFC下</strong>：此处让父元素变成BFC，原先父子同处于根元素这个BFC下，所以才能发生合并，当父元素触发了BFC后，则子元素在新的BFC下，父元素仍然在根元素的BFC下，所以不在同个BFC中，也就无所谓合并了。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-21c12ea315825930.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="父元素变成BFC解决边距合并"></p>
-<ol start="2">
-<li><strong>让两者其中之一脱离常规文档流</strong>，可以设置浮动或者绝对定位</li>
-</ol>
+<p>2.<strong>让两者其中之一脱离常规文档流</strong>，可以设置浮动或者绝对定位</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-ad056ee357c7b249.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="脱离文档流解决边距合并"></p>
-<ol start="3">
-<li><strong>让两者（此处是父元素或子元素）其中之一变成非块级元素</strong>：因为发生margin合并的条件之一是必须是块元素，所以当两者随意一个变成inline-block之后就没法合并了（对inline元素设置margin-top和margin-bottom本身就不生效，也就没有垂直方向上合并这么一说了）。</li>
-</ol>
+<p>3.<strong>让两者（此处是父元素或子元素）其中之一变成非块级元素</strong>：因为发生margin合并的条件之一是必须是块元素，所以当两者随意一个变成inline-block之后就没法合并了（对inline元素设置margin-top和margin-bottom本身就不生效，也就没有垂直方向上合并这么一说了）。</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-3756ee7fba767cd8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="变成非块级解决margin合并"></p>
-<ol start="4">
-<li>给父元素<strong>设置padding或者border</strong>分开他们的margin：</li>
-</ol>
+<p>4.给父元素<strong>设置padding或者border</strong>分开他们的margin：</p>
 <p><img src="https://upload-images.jianshu.io/upload_images/9901864-2446a76fdde36983.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="padding、border解决边距合并"></p>
 <p>同理，解决元素自身的边距合并也可以用上面的四种方法（实际2.3也会触发1）:</p>
 <ol>
@@ -492,7 +477,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-count">8</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -538,7 +523,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、什么是外边距合并"><span class="nav-number">1.</span> <span class="nav-text">一、什么是外边距合并</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、外边距合并规则"><span class="nav-number">2.</span> <span class="nav-text">二、外边距合并规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、如何阻止外边距合并"><span class="nav-number">3.</span> <span class="nav-text">三、如何阻止外边距合并</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、什么是外边距合并"><span class="nav-number">1.</span> <span class="nav-text">一、什么是外边距合并</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-父子关系的合并"><span class="nav-number">1.0.1.</span> <span class="nav-text">1. 父子关系的合并</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-兄弟关系的合并"><span class="nav-number">1.0.2.</span> <span class="nav-text">2. 兄弟关系的合并</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-元素自身的合并"><span class="nav-number">1.0.3.</span> <span class="nav-text">3. 元素自身的合并</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、外边距合并规则"><span class="nav-number">2.</span> <span class="nav-text">二、外边距合并规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、如何阻止外边距合并"><span class="nav-number">3.</span> <span class="nav-text">三、如何阻止外边距合并</span></a></li></ol></div>
             
 
           </div>

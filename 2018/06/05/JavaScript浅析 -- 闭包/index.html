@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JavaScript浅析," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、什么是闭包关于闭包的解释有很多，而我个人理解的闭包，就是引用了局部作用域变量的函数。他由以下两部分构成：  可以被外部访问到的函数 被函数引用的局部变量  下面的例子是闭包的典型例子：12345678function a() &amp;#123;    var value = 1;    function fun() &amp;#123;        console.log(value); // 引用了局部">
+<meta name="keywords" content="JavaScript浅析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript浅析 -- 闭包">
+<meta property="og:url" content="http://yoursite.com/2018/06/05/JavaScript浅析 -- 闭包/index.html">
+<meta property="og:site_name" content="罗少雄&#39;s Blog">
+<meta property="og:description" content="一、什么是闭包关于闭包的解释有很多，而我个人理解的闭包，就是引用了局部作用域变量的函数。他由以下两部分构成：  可以被外部访问到的函数 被函数引用的局部变量  下面的例子是闭包的典型例子：12345678function a() &amp;#123;    var value = 1;    function fun() &amp;#123;        console.log(value); // 引用了局部">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-06-05T14:06:52.626Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript浅析 -- 闭包">
+<meta name="twitter:description" content="一、什么是闭包关于闭包的解释有很多，而我个人理解的闭包，就是引用了局部作用域变量的函数。他由以下两部分构成：  可以被外部访问到的函数 被函数引用的局部变量  下面的例子是闭包的典型例子：12345678function a() &amp;#123;    var value = 1;    function fun() &amp;#123;        console.log(value); // 引用了局部">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/06/05/JavaScript浅析 -- 闭包/"/>
+
+
+
+
+
+  <title>JavaScript浅析 -- 闭包 | 罗少雄's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">罗少雄's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">随便坐吧～</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/05/JavaScript浅析 -- 闭包/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="罗少雄">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/38656908?s=400&u=f8c90313e772d6ef91fe5ce80ebfde0f61982bcd&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="罗少雄's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript浅析 -- 闭包</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-05T22:04:31+08:00">
+                2018-06-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、什么是闭包"><a href="#一、什么是闭包" class="headerlink" title="一、什么是闭包"></a>一、什么是闭包</h3><p>关于闭包的解释有很多，而我个人理解的<strong>闭包，就是引用了局部作用域变量的函数</strong>。他由以下两部分构成：</p>
+<ul>
+<li>可以被外部访问到的函数</li>
+<li>被函数引用的局部变量</li>
+</ul>
+<p>下面的例子是闭包的典型例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function a() &#123;</span><br><span class="line">    var value = 1;</span><br><span class="line">    function fun() &#123;</span><br><span class="line">        console.log(value); // 引用了局部变量</span><br><span class="line">    &#125;</span><br><span class="line">    return fun; // return了该函数，使该函数可以被外部访问</span><br><span class="line">&#125;</span><br><span class="line">a()();</span><br></pre></td></tr></table></figure></p>
+<p>很多人错误的以为闭包一定要return一个函数才可以，但并不是这样的。<strong>判断标准应该是函数是否可被外部访问，函数是否保持了内部局部变量的引用</strong>。如下面例子返回的对象也构成了闭包。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var car = (function() &#123;</span><br><span class="line">    var speed = 50; // 被引用的局部变量 </span><br><span class="line">    function getSpeed() &#123;</span><br><span class="line">        return speed;</span><br><span class="line">    &#125;</span><br><span class="line">    function setSpeed(value) &#123;zuoyong</span><br><span class="line">        speed = value;</span><br><span class="line">    &#125;</span><br><span class="line">    return &#123;</span><br><span class="line">        getSpeed: getSpeed, // 可被外部访问到的函数</span><br><span class="line">        setSpeed: setSpeed</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line">car.getSpeed();</span><br></pre></td></tr></table></figure></p>
+<p>即使不return，只要函数能被外部访问到还是闭包，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(function()&#123;</span><br><span class="line">    var speed = 50; // 被引用的局部变量 </span><br><span class="line">    window.getSpeed = function() &#123; // 可被外部访问的函数</span><br><span class="line">        return speed;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)()</span><br><span class="line">window.getSpeed();</span><br></pre></td></tr></table></figure></p>
+<h3 id="二、闭包的作用"><a href="#二、闭包的作用" class="headerlink" title="二、闭包的作用"></a>二、闭包的作用</h3><p>js中，由于作用域链的存在，使得内部作用域可以访问外部变量。但是，外部作用域是无法访问内部作用域里的变量的。那如果想要让外部访问内部的变量，就只有通过内部提供一个开放函数，然后该函数再去访问内部变量。这样就形成了闭包。所以闭包的作用就是<strong>使外部作用域能够访问内部变量</strong>。这是我认为闭包最直接的作用，其他都是通过这点延伸出来的。看看下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var func = [];</span><br><span class="line">for (var i=0;i&lt;4;i++) &#123;</span><br><span class="line">    func[i] = function() &#123;</span><br><span class="line">        return i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log( func[2]() ); // 4</span><br></pre></td></tr></table></figure></p>
+<p>这个例子最后输出的结果是4。为什么呢？</p>
+<ol>
+<li>代码从上往下执行，当for函数中i变成了4时，不满足i&lt;4条件，函数执行完毕此时i为4。</li>
+<li>此时执行<code>console.log(func[2]())</code>，函数会返回i。</li>
+<li>这个func[2]函数内部本身没有i，就会向上级的for里面去找i，此时for里面有i为4则返回。</li>
+</ol>
+<p>但其实本意我们是想让他输出对应的i即2，应该如何实现呢？</p>
+<ol>
+<li>首先，为了输出对应的i，所以我们并不能使用for循环里面的i，而要单独创建一个i传到对应的函数里。而<strong>为了创建一个单独的作用域使i不被污染</strong>，就要使用到立即执行函数表达式。</li>
+<li>使用了立即执行函数表达式将i封存在函数内部之后，则不再随外部改变而改变，但外部也访问不到这个i了。为了<strong>使外部作用域能够访问内部变量</strong>，此时就要使用闭包，返回一个引用局部变量i的函数。</li>
+</ol>
+<p>根据上面的分析，可将代码改写如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">var func = [];</span><br><span class="line">for (var i=0;i&lt;4;i++) &#123;</span><br><span class="line">    func[i] = (function(j) &#123; // 立即执行函数表达式传i进来，对于该函数内的j就是传进来当时的i，不会受新的i影响</span><br><span class="line">          return function() &#123;</span><br><span class="line">              return j;</span><br><span class="line">          &#125;;</span><br><span class="line">    &#125;)(i);</span><br><span class="line">&#125;</span><br><span class="line">console.log( func[2]() ); // 2</span><br><span class="line"></span><br><span class="line">// 或者如下，原理一样，都是利用 立即执行函数表达式的独立作用域 和 闭包的通过返回函数使内部变量可访问</span><br><span class="line"></span><br><span class="line">for (var i=0;i&lt;4;i++) &#123;</span><br><span class="line">    (function(j) &#123; // j换成i没影响，只是为了方便区分所以写j</span><br><span class="line">        func[j] = function() &#123;</span><br><span class="line">            return j;</span><br><span class="line">        &#125;</span><br><span class="line">     &#125;)(i);</span><br><span class="line">&#125;</span><br><span class="line">console.log( func[2]() ); // 2</span><br></pre></td></tr></table></figure></p>
+<p>闭包有啥用？什么情况下需要用闭包？通过上面的例子和分析，相信这两个问题你已经有了答案。<strong>当你需要让外部作用域访问内部的变量时，就是你使用闭包的时候了。</strong>也有人说闭包的作用是隐藏一个变量，使该变量私有化只能通过内部函数来访问。其实我个人觉得并不是，真正起到隐藏变量作用的其实是那个函数而不是闭包。</p>
+<h3 id="三、闭包的注意点"><a href="#三、闭包的注意点" class="headerlink" title="三、闭包的注意点"></a>三、闭包的注意点</h3><p>当我们在使用闭包的时候有一点要注意：</p>
+<ul>
+<li>一般函数执行完毕之后，内部的变量已经没用就会被销毁，从而释放内存。但<strong>由于闭包中（即返回的函数）保持了对函数内部变量的引用，所以函数内部变量不会被销毁，会一直存在内存中</strong>，内存消耗大时会对网页性能产生一定的影响（ie还会造成内存泄漏，但这是ie的bug，所以不是对性能太过高要求也可以不考虑，只是不要滥用就行），若要优化，可在不需要该闭包时将其赋值为null，如上述代码<code>func[2] = null</code>。</li>
+</ul>
+<h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h3><p>1.闭包就是引用了局部变量的函数。<br>2.闭包的作用就是使外部作用域能访问内部变量。<br>3.闭包中被引用的变量会一直存在内存中，除非人为销毁。</p>
+<h3 id="五、一道有意思的面试题"><a href="#五、一道有意思的面试题" class="headerlink" title="五、一道有意思的面试题"></a>五、一道有意思的面试题</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">function fun(n,o) &#123;</span><br><span class="line">  console.log(o)</span><br><span class="line">  return &#123;</span><br><span class="line">    fun:function(m)&#123;</span><br><span class="line">      return fun(m,n);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br><span class="line">var a = fun(0);  a.fun(1);  a.fun(2);  a.fun(3);//undefined,?,?,?</span><br><span class="line">var b = fun(0).fun(1).fun(2).fun(3);//undefined,?,?,?</span><br><span class="line">var c = fun(0).fun(1);  c.fun(2);  c.fun(3);//undefined,?,?,?</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript浅析/" rel="tag"># JavaScript浅析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/04/11/JavaScript浅析 -- 作用域和作用域链/" rel="next" title="JavaScript浅析 -- 作用域和作用域链">
+                <i class="fa fa-chevron-left"></i> JavaScript浅析 -- 作用域和作用域链
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars1.githubusercontent.com/u/38656908?s=400&u=f8c90313e772d6ef91fe5ce80ebfde0f61982bcd&v=4"
+                alt="罗少雄" />
+            
+              <p class="site-author-name" itemprop="name">罗少雄</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、什么是闭包"><span class="nav-number">1.</span> <span class="nav-text">一、什么是闭包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、闭包的作用"><span class="nav-number">2.</span> <span class="nav-text">二、闭包的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、闭包的注意点"><span class="nav-number">3.</span> <span class="nav-text">三、闭包的注意点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、总结"><span class="nav-number">4.</span> <span class="nav-text">四、总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#五、一道有意思的面试题"><span class="nav-number">5.</span> <span class="nav-text">五、一道有意思的面试题</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user-circle"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">罗少雄</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
