@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JavaScript浅析," />
+  <meta name="keywords" content="必备知识点," />
 
 
 
@@ -79,21 +79,18 @@
 
 
 
-<meta name="description" content="一、作用域所谓作用域，简单来说就是变量和函数的可访问范围。举个例子：12345function test() &amp;#123;	var a = 1;	console.log(a); // 输出1&amp;#125;console.log(a); // 会报错，找不到a 上面test函数中的变量a拥有一个函数作用域，只能在函数里可以访问到，但在函数外面console.log(a)则访问不到会报错。 JS有两个作">
-<meta name="keywords" content="JavaScript浅析">
+<meta name="description" content="一、http和https的区别 http：数据不通过加密就进行传输，在传输过程中数据处于裸奔状态，在路由、小区网关等中间通信环境可以被拦截或纂改数据等。比如常见的返回一个官网页面，运营商往返回的页面插入广告；连接公共区域的wifi能被获得明文的账号和密码。 https：数据先经过加密再进行传输。解密方式只有特定的目标方才知道，即使中间做了拦截也无法破解和利用数据内容。  二、加密方式既然https">
+<meta name="keywords" content="必备知识点">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JavaScript浅析 -- 作用域和作用域链">
-<meta property="og:url" content="http://yoursite.com/2018/04/11/JavaScript浅析 -- 作用域和作用域链/index.html">
+<meta property="og:title" content="https是如何保证安全的呢？">
+<meta property="og:url" content="http://yoursite.com/2018/06/02/https是如何保证安全的呢/index.html">
 <meta property="og:site_name" content="罗少雄&#39;s Blog">
-<meta property="og:description" content="一、作用域所谓作用域，简单来说就是变量和函数的可访问范围。举个例子：12345function test() &amp;#123;	var a = 1;	console.log(a); // 输出1&amp;#125;console.log(a); // 会报错，找不到a 上面test函数中的变量a拥有一个函数作用域，只能在函数里可以访问到，但在函数外面console.log(a)则访问不到会报错。 JS有两个作">
+<meta property="og:description" content="一、http和https的区别 http：数据不通过加密就进行传输，在传输过程中数据处于裸奔状态，在路由、小区网关等中间通信环境可以被拦截或纂改数据等。比如常见的返回一个官网页面，运营商往返回的页面插入广告；连接公共区域的wifi能被获得明文的账号和密码。 https：数据先经过加密再进行传输。解密方式只有特定的目标方才知道，即使中间做了拦截也无法破解和利用数据内容。  二、加密方式既然https">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-5ef0ffe9f08a3cba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/9901864-8af133c2d57b05c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
-<meta property="og:updated_time" content="2018-06-05T13:52:36.399Z">
+<meta property="og:updated_time" content="2018-06-08T04:33:20.068Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="JavaScript浅析 -- 作用域和作用域链">
-<meta name="twitter:description" content="一、作用域所谓作用域，简单来说就是变量和函数的可访问范围。举个例子：12345function test() &amp;#123;	var a = 1;	console.log(a); // 输出1&amp;#125;console.log(a); // 会报错，找不到a 上面test函数中的变量a拥有一个函数作用域，只能在函数里可以访问到，但在函数外面console.log(a)则访问不到会报错。 JS有两个作">
-<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/9901864-5ef0ffe9f08a3cba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta name="twitter:title" content="https是如何保证安全的呢？">
+<meta name="twitter:description" content="一、http和https的区别 http：数据不通过加密就进行传输，在传输过程中数据处于裸奔状态，在路由、小区网关等中间通信环境可以被拦截或纂改数据等。比如常见的返回一个官网页面，运营商往返回的页面插入广告；连接公共区域的wifi能被获得明文的账号和密码。 https：数据先经过加密再进行传输。解密方式只有特定的目标方才知道，即使中间做了拦截也无法破解和利用数据内容。  二、加密方式既然https">
 
 
 
@@ -123,13 +120,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/04/11/JavaScript浅析 -- 作用域和作用域链/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/06/02/https是如何保证安全的呢/"/>
 
 
 
 
 
-  <title>JavaScript浅析 -- 作用域和作用域链 | 罗少雄's Blog</title>
+  <title>https是如何保证安全的呢？ | 罗少雄's Blog</title>
   
 
 
@@ -236,7 +233,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/04/11/JavaScript浅析 -- 作用域和作用域链/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/06/02/https是如何保证安全的呢/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="罗少雄">
@@ -253,7 +250,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JavaScript浅析 -- 作用域和作用域链</h1>
+          <h1 class="post-title" itemprop="name headline">https是如何保证安全的呢？</h1>
         
 
         <div class="post-meta">
@@ -265,8 +262,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-04-11T20:54:07+08:00">
-                2018-04-11
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-02T12:30:25+08:00">
+                2018-06-02
               </time>
             
 
@@ -308,33 +305,24 @@
       
 
       
-        <h3 id="一、作用域"><a href="#一、作用域" class="headerlink" title="一、作用域"></a>一、作用域</h3><p>所谓作用域，简单来说就是变量和函数的可访问范围。举个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function test() &#123;</span><br><span class="line">	var a = 1;</span><br><span class="line">	console.log(a); // 输出1</span><br><span class="line">&#125;</span><br><span class="line">console.log(a); // 会报错，找不到a</span><br></pre></td></tr></table></figure></p>
-<p>上面test函数中的变量a拥有一个函数作用域，只能在函数里可以访问到，但在函数外面<code>console.log(a)</code>则访问不到会报错。</p>
-<p>JS有两个作用域，全局作用域和局部作用域（又叫函数作用域）。</p>
-<p>1.局部作用域：<strong>只在某个特定的代码块里才能访问</strong>。比如开头的例子变量a，只能在函数包裹起来的那块内部区域里能被访问。常见于函数内部，如下的形式中从 ‘{’ 开始到与之匹配的 ‘}’ 结束，for、if、switch等包裹起来的不算。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function test() &#123; </span><br><span class="line">    // 局部作用域</span><br><span class="line">&#125;</span><br><span class="line">或者</span><br><span class="line">var test = function() &#123;</span><br><span class="line">    // 局部作用域</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>2.全局作用域：<strong>在代码中所有地方都能够访问其中变量和函数的作用范围</strong>。有下面三种情况可以拥有全局作用域：</p>
-<ul>
-<li>最外层函数和最外层函数之外定义的变量拥有全局作用域。</li>
-<li>未定义直接赋值的对象自动变为全局变量，拥有全局作用域。</li>
-<li>window对象的所有属性拥有全局作用域。</li>
+        <h3 id="一、http和https的区别"><a href="#一、http和https的区别" class="headerlink" title="一、http和https的区别"></a>一、http和https的区别</h3><ul>
+<li>http：数据不通过加密就进行传输，在传输过程中数据处于裸奔状态，在路由、小区网关等中间通信环境可以被拦截或纂改数据等。比如常见的返回一个官网页面，运营商往返回的页面插入广告；连接公共区域的wifi能被获得明文的账号和密码。</li>
+<li>https：数据先经过加密再进行传输。解密方式只有特定的目标方才知道，即使中间做了拦截也无法破解和利用数据内容。</li>
 </ul>
-<h3 id="二、作用域链"><a href="#二、作用域链" class="headerlink" title="二、作用域链"></a>二、作用域链</h3><p>在讲作用域链前，我们先来讲讲变量对象。</p>
+<h3 id="二、加密方式"><a href="#二、加密方式" class="headerlink" title="二、加密方式"></a>二、加密方式</h3><p>既然https是先将传输数据进行加密再发送，那常用的加密方式又有哪些呢？我们继续往下瞧，如下罗列了三种加密方式：</p>
 <ul>
-<li>变量对象：<strong>每个函数都有自己的执行环境，每个环境都有与之关联的变量对象，执行环境中定义的变量和函数都保存在这个对象中。</strong>由于在同个执行环境里定义的变量和函数拥有相同的作用域，所以同个变量对象里保存的变量和函数拥有相同的作用域。（在web浏览器中，全局执行环境对应的变量对象为window对象，所以如上面所说window对象的属性才会有全局作用域）。</li>
+<li>对称加密：<strong>数据的加密和解密采用相同的密钥</strong>。这种方法的优点是加密速度快，常见的有AES。缺点是所有知道密钥的人全都可以解密。</li>
+<li>非对称加密：<strong>数据的加密采用不同的密钥，即公钥和私钥</strong>。用公钥加密的数据只能用私钥解密，用私钥加密的数据只能用公钥解密。一般是私钥给自己，公钥给别人。这种方法优点是相比对称加密更安全，缺点时加密速度慢，CPU开销大。</li>
+<li>Hash加密：<strong>将任意长度的字符串加密成固定长度的字符串，且任何拿到加密后数据的人无法破解成原数据</strong>。Hash常用来验证数据的完整性，常见的有MD5、SHA1、SHA256。密码的传输一般采用的就是这种方式而非明文，这样即使密码数据库泄露也无法获取原密码。</li>
 </ul>
-<p>而代码在环境中执行时，会创建变量对象的一个作用域链。<strong>作用域链的前端，是当前执行代码所在环境的变量对象</strong>，然后是包含环境（即当前函数所在的执行环境）的变量对象，一直延续到全局执行环境，<strong>即全局环境的变量对象始终是作用域链中的最后一个对象</strong>。举个例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var outVariable = &apos;最外层变量&apos;;</span><br><span class="line">function outFunction() &#123; // 最外层函数</span><br><span class="line">    var innerVariable = &apos;内部变量&apos;;</span><br><span class="line">    function innerFunction() &#123; // 内部函数</span><br><span class="line">        var variable = &apos;内部函数的变量&apos;;</span><br><span class="line">    &#125; </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<p>上面这个例子，在inner函数的执行环境中的作用域链如下：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/9901864-5ef0ffe9f08a3cba.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="作用域链"></p>
-<p>由图可以看到，作用域链的开头是当前执行代码所在环境的变量对象，末尾是全局变量对象。</p>
-<p>那作用域链有什么用？作用域链的用途，是保证对执行环境<strong>有权</strong>访问的所有变量和函数的<strong>有序</strong>访问。要理解这句话，重点在于理解有权和有序这两个字。</p>
+<p>*或许有人会有疑惑，采用非对称加密的方式，把公钥公布出去，私钥给自己，虽然返回的数据是只有自己知道，但发出去的数据不还是所有有公钥的都可见了么？<br>其实，既然返回的数据只有自己可见，那服务端可以在返回的数据里跟客户端商量一种新的通信加密方式，而这种通信方式藏在返回数据里只有客户端才能解密，所以就只有两端知道。当客户端需要发送数据时，可以先用新的加密方式加密，再用私钥加密之后发送，这样其他拥有公钥的非目标端用公钥解密了的还是用新加密方式加密的数据。</p>
+<h3 id="三、数字证书"><a href="#三、数字证书" class="headerlink" title="三、数字证书"></a>三、数字证书</h3><p>在上面我们知道了https可以采用加密的方式来确保传输数据的安全，而加密方式中非对称加密是比较安全的一种。但是，直接通过非对称加密的方式是否就一定确保数据通信完全安全呢？其实不然，因为公钥是公布出去的，服务端有可能收到假的公钥，这样别人就可以伪造客户端用假的公钥回复假的数据，而服务端还傻傻的认为是安全可靠的。如何避免这种情况的发生呢？要避免这种情况，首先就要确保公钥是真的公钥？那这个又如何确保呢？这就要靠数字证书了。</p>
 <ul>
-<li>有权：只有在当前执行环境的作用域链上变量对象的变量和函数才能访问到。</li>
-<li>有序：当查找一个变量时，先在当前的变量对象里找，找不到再到作用域链的上一个变量对象中找，一直到作用域链的末尾即全局变量对象，如果还没有则报错。</li>
+<li>数字证书：数字证书即一些CA机构发布的证书，网站需要使用https时可以申请证书，将自己的相关信息和公钥之类的写于其上，而只要有这些证书证明的公钥就被认为可信的。</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">var outVariable = &apos;最外层变量&apos;;</span><br><span class="line">function outFunction() &#123;</span><br><span class="line">    function firstFunc() &#123;</span><br><span class="line">        var firstFuncVariable = &apos;第一个函数的变量&apos;;</span><br><span class="line">        console.log(outVariable); // 输出&apos;最外层变量&apos;</span><br><span class="line">    &#125; </span><br><span class="line">    function secondFunc() &#123;</span><br><span class="line">        var secondFuncVariable = &apos;第二个函数的变量&apos;;</span><br><span class="line">        console.log(firstFuncVariable); // 报错</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这段代码中函数firstFunc和函数secondFunc的作用域链分别为：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/9901864-8af133c2d57b05c6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="作用域链例子"></p>
-<p>根据上图，当第一个函数要访问outVariable变量时，先找1里有没有，没有再找2里也没有，再找3找到outVariable则返回。而第二个函数要访问firstFuncVariable时，先找4没有，再找5没有，最后找到6还没有所以报错，这个一层一层的搜索就是沿着作用域链的<strong>顺序</strong>来的。而secondFunc的作用域链上并没有firstFunc的变量对象，所以<strong>无权</strong>访问其中的变量。</p>
+<p>一般浏览器都会内置一些根CA或顶级CA的证书，当需要验证时，会通过CA链逐级验证（即网站的证书通过A证书证明有效，A证书由上级B证书确保有效，最后到根证书验证以确保整个验证可靠）。</p>
+<h3 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h3><p>好了，到此https的基本原理讲解完了。简单总结下就是：</p>
+<p>1.为了确保传输数据不裸奔需要对数据进行加密。<br>2.为了确保加密公布出去的密钥真实可靠，需要数字证书做公证人。</p>
 
       
     </div>
@@ -352,7 +340,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/JavaScript浅析/" rel="tag"># JavaScript浅析</a>
+            <a href="/tags/必备知识点/" rel="tag"># 必备知识点</a>
           
         </div>
       
@@ -365,8 +353,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/07/JavaScript浅析 -- 类型转换和比较/" rel="next" title="JavaScript浅析 -- 类型转换和比较">
-                <i class="fa fa-chevron-left"></i> JavaScript浅析 -- 类型转换和比较
+              <a href="/2018/04/11/JavaScript浅析 -- 作用域和作用域链/" rel="next" title="JavaScript浅析 -- 作用域和作用域链">
+                <i class="fa fa-chevron-left"></i> JavaScript浅析 -- 作用域和作用域链
               </a>
             
           </div>
@@ -375,8 +363,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/06/02/https是如何保证安全的呢/" rel="prev" title="https是如何保证安全的呢？">
-                https是如何保证安全的呢？ <i class="fa fa-chevron-right"></i>
+              <a href="/2018/06/03/JavaScript浅析 -- IIFE立即执行函数表达式/" rel="prev" title="JavaScript浅析 -- IIFE立即执行函数表达式">
+                JavaScript浅析 -- IIFE立即执行函数表达式 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -504,7 +492,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、作用域"><span class="nav-number">1.</span> <span class="nav-text">一、作用域</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、作用域链"><span class="nav-number">2.</span> <span class="nav-text">二、作用域链</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、http和https的区别"><span class="nav-number">1.</span> <span class="nav-text">一、http和https的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、加密方式"><span class="nav-number">2.</span> <span class="nav-text">二、加密方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、数字证书"><span class="nav-number">3.</span> <span class="nav-text">三、数字证书</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#四、总结"><span class="nav-number">4.</span> <span class="nav-text">四、总结</span></a></li></ol></div>
             
 
           </div>

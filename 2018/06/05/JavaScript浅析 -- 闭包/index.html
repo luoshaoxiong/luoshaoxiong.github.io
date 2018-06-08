@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="罗少雄&#39;s Blog">
 <meta property="og:description" content="一、什么是闭包关于闭包的解释有很多，而我个人理解的闭包，就是引用了局部作用域变量的函数。他由以下两部分构成：  可以被外部访问到的函数 被函数引用的局部变量  下面的例子是闭包的典型例子：12345678function a() &amp;#123;    var value = 1;    function fun() &amp;#123;        console.log(value); // 引用了局部">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-05T14:06:52.626Z">
+<meta property="og:updated_time" content="2018-06-08T04:30:15.682Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript浅析 -- 闭包">
 <meta name="twitter:description" content="一、什么是闭包关于闭包的解释有很多，而我个人理解的闭包，就是引用了局部作用域变量的函数。他由以下两部分构成：  可以被外部访问到的函数 被函数引用的局部变量  下面的例子是闭包的典型例子：12345678function a() &amp;#123;    var value = 1;    function fun() &amp;#123;        console.log(value); // 引用了局部">
@@ -311,7 +311,7 @@
 <li>被函数引用的局部变量</li>
 </ul>
 <p>下面的例子是闭包的典型例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">function a() &#123;</span><br><span class="line">    var value = 1;</span><br><span class="line">    function fun() &#123;</span><br><span class="line">        console.log(value); // 引用了局部变量</span><br><span class="line">    &#125;</span><br><span class="line">    return fun; // return了该函数，使该函数可以被外部访问</span><br><span class="line">&#125;</span><br><span class="line">a()();</span><br></pre></td></tr></table></figure></p>
-<p>很多人错误的以为闭包一定要return一个函数才可以，但并不是这样的。<strong>判断标准应该是函数是否可被外部访问，函数是否保持了内部局部变量的引用</strong>。如下面例子返回的对象也构成了闭包。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var car = (function() &#123;</span><br><span class="line">    var speed = 50; // 被引用的局部变量 </span><br><span class="line">    function getSpeed() &#123;</span><br><span class="line">        return speed;</span><br><span class="line">    &#125;</span><br><span class="line">    function setSpeed(value) &#123;zuoyong</span><br><span class="line">        speed = value;</span><br><span class="line">    &#125;</span><br><span class="line">    return &#123;</span><br><span class="line">        getSpeed: getSpeed, // 可被外部访问到的函数</span><br><span class="line">        setSpeed: setSpeed</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line">car.getSpeed();</span><br></pre></td></tr></table></figure></p>
+<p>很多人错误的以为闭包一定要return一个函数才可以，但并不是这样的。<strong>判断标准应该是函数是否可被外部访问，函数是否保持了内部局部变量的引用</strong>。如下面例子返回的对象也构成了闭包。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">var car = (function() &#123;</span><br><span class="line">    var speed = 50; // 被引用的局部变量 </span><br><span class="line">    function getSpeed() &#123;</span><br><span class="line">        return speed;</span><br><span class="line">    &#125;</span><br><span class="line">    function setSpeed(value) &#123;</span><br><span class="line">        speed = value;</span><br><span class="line">    &#125;</span><br><span class="line">    return &#123;</span><br><span class="line">        getSpeed: getSpeed, // 可被外部访问到的函数</span><br><span class="line">        setSpeed: setSpeed</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)();</span><br><span class="line">car.getSpeed();</span><br></pre></td></tr></table></figure></p>
 <p>即使不return，只要函数能被外部访问到还是闭包，如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">(function()&#123;</span><br><span class="line">    var speed = 50; // 被引用的局部变量 </span><br><span class="line">    window.getSpeed = function() &#123; // 可被外部访问的函数</span><br><span class="line">        return speed;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;)()</span><br><span class="line">window.getSpeed();</span><br></pre></td></tr></table></figure></p>
 <h3 id="二、闭包的作用"><a href="#二、闭包的作用" class="headerlink" title="二、闭包的作用"></a>二、闭包的作用</h3><p>js中，由于作用域链的存在，使得内部作用域可以访问外部变量。但是，外部作用域是无法访问内部作用域里的变量的。那如果想要让外部访问内部的变量，就只有通过内部提供一个开放函数，然后该函数再去访问内部变量。这样就形成了闭包。所以闭包的作用就是<strong>使外部作用域能够访问内部变量</strong>。这是我认为闭包最直接的作用，其他都是通过这点延伸出来的。看看下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var func = [];</span><br><span class="line">for (var i=0;i&lt;4;i++) &#123;</span><br><span class="line">    func[i] = function() &#123;</span><br><span class="line">        return i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log( func[2]() ); // 4</span><br></pre></td></tr></table></figure></p>
 <p>这个例子最后输出的结果是4。为什么呢？</p>
@@ -363,8 +363,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/04/11/JavaScript浅析 -- 作用域和作用域链/" rel="next" title="JavaScript浅析 -- 作用域和作用域链">
-                <i class="fa fa-chevron-left"></i> JavaScript浅析 -- 作用域和作用域链
+              <a href="/2018/06/03/JavaScript浅析 -- IIFE立即执行函数表达式/" rel="next" title="JavaScript浅析 -- IIFE立即执行函数表达式">
+                <i class="fa fa-chevron-left"></i> JavaScript浅析 -- IIFE立即执行函数表达式
               </a>
             
           </div>
@@ -372,6 +372,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/06/08/test/" rel="prev" title="JavaScript浅析 -- 面向对象">
+                JavaScript浅析 -- 面向对象 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -452,7 +456,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
