@@ -87,7 +87,7 @@
 <meta property="og:site_name" content="罗少雄&#39;s Blog">
 <meta property="og:description" content="一、什么是闭包关于闭包的解释有很多，而我个人理解的闭包，就是引用了局部作用域变量的函数。他由以下两部分构成：  可以被外部访问到的函数 被函数引用的局部变量  下面的例子是闭包的典型例子：12345678function a() &amp;#123;    var value = 1;    function fun() &amp;#123;        console.log(value); // 引用了局部">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-06-08T04:30:15.682Z">
+<meta property="og:updated_time" content="2018-06-08T05:31:08.543Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="JavaScript浅析 -- 闭包">
 <meta name="twitter:description" content="一、什么是闭包关于闭包的解释有很多，而我个人理解的闭包，就是引用了局部作用域变量的函数。他由以下两部分构成：  可以被外部访问到的函数 被函数引用的局部变量  下面的例子是闭包的典型例子：12345678function a() &amp;#123;    var value = 1;    function fun() &amp;#123;        console.log(value); // 引用了局部">
@@ -316,9 +316,9 @@
 <h3 id="二、闭包的作用"><a href="#二、闭包的作用" class="headerlink" title="二、闭包的作用"></a>二、闭包的作用</h3><p>js中，由于作用域链的存在，使得内部作用域可以访问外部变量。但是，外部作用域是无法访问内部作用域里的变量的。那如果想要让外部访问内部的变量，就只有通过内部提供一个开放函数，然后该函数再去访问内部变量。这样就形成了闭包。所以闭包的作用就是<strong>使外部作用域能够访问内部变量</strong>。这是我认为闭包最直接的作用，其他都是通过这点延伸出来的。看看下面的例子：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">var func = [];</span><br><span class="line">for (var i=0;i&lt;4;i++) &#123;</span><br><span class="line">    func[i] = function() &#123;</span><br><span class="line">        return i;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">console.log( func[2]() ); // 4</span><br></pre></td></tr></table></figure></p>
 <p>这个例子最后输出的结果是4。为什么呢？</p>
 <ol>
-<li>代码从上往下执行，当for函数中i变成了4时，不满足i&lt;4条件，函数执行完毕此时i为4。</li>
+<li>代码从上往下执行，当for括号中i变成了4时，不满足i&lt;4条件，for执行完毕此时i为4。</li>
 <li>此时执行<code>console.log(func[2]())</code>，函数会返回i。</li>
-<li>这个func[2]函数内部本身没有i，就会向上级的for里面去找i，此时for里面有i为4则返回。</li>
+<li>这个func[2]函数内部本身没有i，就会向上级的作用域里面去找i，此时上级作用域里面有i为4则返回。</li>
 </ol>
 <p>但其实本意我们是想让他输出对应的i即2，应该如何实现呢？</p>
 <ol>
