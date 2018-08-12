@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="JavaScript浅析," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="一、同源策略什么是浏览器的同源策略？浏览器出于安全考虑，只允许相同域下的资源进行交互，不同源下的脚本在没有明确授权的情况下，不能读写对方的资源，这就是同源策略。 而所谓的同源，指的是协议、域名、端口号相同。举个例子：http://github.com:80，其中http://就是协议，而github.com就是域名，80是端口（默认端口可以省略）。只有这三个完全相同才算同源，任何一个不同都不算。假">
+<meta name="keywords" content="JavaScript浅析">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JavaScript浅析 -- 同源策略和跨域">
+<meta property="og:url" content="http://yoursite.com/2018/08/08/JavaScript浅析 -- 同源策略和跨域/index.html">
+<meta property="og:site_name" content="罗少雄&#39;s Blog">
+<meta property="og:description" content="一、同源策略什么是浏览器的同源策略？浏览器出于安全考虑，只允许相同域下的资源进行交互，不同源下的脚本在没有明确授权的情况下，不能读写对方的资源，这就是同源策略。 而所谓的同源，指的是协议、域名、端口号相同。举个例子：http://github.com:80，其中http://就是协议，而github.com就是域名，80是端口（默认端口可以省略）。只有这三个完全相同才算同源，任何一个不同都不算。假">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-08-12T12:55:03.284Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JavaScript浅析 -- 同源策略和跨域">
+<meta name="twitter:description" content="一、同源策略什么是浏览器的同源策略？浏览器出于安全考虑，只允许相同域下的资源进行交互，不同源下的脚本在没有明确授权的情况下，不能读写对方的资源，这就是同源策略。 而所谓的同源，指的是协议、域名、端口号相同。举个例子：http://github.com:80，其中http://就是协议，而github.com就是域名，80是端口（默认端口可以省略）。只有这三个完全相同才算同源，任何一个不同都不算。假">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/08/08/JavaScript浅析 -- 同源策略和跨域/"/>
+
+
+
+
+
+  <title>JavaScript浅析 -- 同源策略和跨域 | 罗少雄's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">罗少雄's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">随便坐吧～</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/08/08/JavaScript浅析 -- 同源策略和跨域/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="罗少雄">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="https://avatars1.githubusercontent.com/u/38656908?s=400&u=f8c90313e772d6ef91fe5ce80ebfde0f61982bcd&v=4">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="罗少雄's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">JavaScript浅析 -- 同源策略和跨域</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-08-08T22:34:05+08:00">
+                2018-08-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv"><i class="fa fa-file-o"></i> 浏览
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h3><p>什么是浏览器的同源策略？浏览器出于安全考虑，<strong>只允许相同域下的资源进行交互</strong>，不同源下的脚本在没有明确授权的情况下，不能读写对方的资源，这就是同源策略。</p>
+<p>而所谓的<strong>同源，指的是<code>协议、域名、端口号</code>相同</strong>。举个例子：<code>http://github.com:80</code>，其中<code>http://</code>就是协议，而<code>github.com</code>就是域名，<code>80</code>是端口（默认端口可以省略）。只有这三个完全相同才算同源，任何一个不同都不算。假设当前的网址是<code>http://www.a.com:80/a/index.js</code>，同源情况如下：</p>
+<ul>
+<li><code>https://www.a.com:80</code> 不同源（协议不同）</li>
+<li><code>http://www.a.com:90</code> 不同源（端口号不同）</li>
+<li><code>http://a.com:80</code> 不同源（域名不同）</li>
+<li><code>http://abc.a.com:80</code> 不同源（域名不同）</li>
+<li><code>http://www.b.com:80</code> 不同源（域名不同）</li>
+<li><code>http://192.110.110.110:80</code> 不同源（<code>192.110.110.110</code>是<code>www.a.com</code>对应的ip也认为域名不同）</li>
+<li><code>http://www.a.com:80/b/index.js</code> 同源（只要前部分相同，后面不同文件夹也可以）</li>
+</ul>
+<p>如果两个网站不同源，则交互会受到限制，具体如下：</p>
+<blockquote>
+<ul>
+<li>不能共享cookie、storage和IndexedDB。</li>
+<li>不能互相操作dom。</li>
+<li>不能向非同源地址发送 AJAX 请求（可发但浏览器会拒绝接受响应）。</li>
+</ul>
+</blockquote>
+<p>而为啥要有这个策略限制呢？试想一下，在一个窗口刚登录过银行网站<a href="http://www.bank.com，然后又切换到另一个页面http://hacker.com，如果这个与银行非同源页面能够访问到银行页面的cookie，而cookie里却保存着银行的账号和密码，这是一件非常危险的事情。" target="_blank" rel="noopener">http://www.bank.com，然后又切换到另一个页面http://hacker.com，如果这个与银行非同源页面能够访问到银行页面的cookie，而cookie里却保存着银行的账号和密码，这是一件非常危险的事情。</a></p>
+<h3 id="二、跨域方案"><a href="#二、跨域方案" class="headerlink" title="二、跨域方案"></a>二、跨域方案</h3><p>虽然这个同源策略是为了安全而诞生的。但有时候开发我们却需要有一些跨域请求或操作。比如使用第三方服务而需要请求第三方服务器，这就是所谓的跨域。</p>
+<p>那如何避开浏览器的同源策略实现跨域呢？此处主要整理了八种方案，主要分为三类：</p>
+<ul>
+<li>AJAX 请求的跨域</li>
+<li>iframe 的跨域（又可分为主域相同和主域不同）</li>
+<li>通过服务器代理实现跨域</li>
+</ul>
+<h5 id="（一）AJAX-请求的跨域"><a href="#（一）AJAX-请求的跨域" class="headerlink" title="（一）AJAX 请求的跨域"></a>（一）AJAX 请求的跨域</h5><h6 id="1-JSONP"><a href="#1-JSONP" class="headerlink" title="1. JSONP"></a>1. JSONP</h6><p>JSONP是跨域中非常常见的一种形式，他支持所有老版的浏览器。其主要是利用页面上请求<code>&lt;script&gt;</code>脚本不受同源策略限制的特性，来实现跨域。主要步骤如下：</p>
+<ul>
+<li>创建一个接收后处理数据的回调函数，并在被请求的url后面增加<code>callback=funcName</code>。</li>
+<li>创建一个<code>&lt;script&gt;</code>元素，src指定为上面增加了callback的url。</li>
+<li>发起脚本请求，服务器返回数据后会自动执行script脚本从而执行了回调函数。</li>
+</ul>
+<p>（1） 原生版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 前端页面代码</span><br><span class="line">&lt;script&gt;</span><br><span class="line">   // 服务器收到请求后会将数据放在回调函数的参数位置返回</span><br><span class="line">    function jsonpCallback(data) &#123;</span><br><span class="line">        console.log(data.msg); // 作为参数的JSON数据被视为js对象而非字符串，不需要JSON.parse</span><br><span class="line">    &#125;</span><br><span class="line">&lt;/script&gt;</span><br><span class="line">&lt;script src=&quot;http://127.0.0.1:8080?callback=jsonpCallback&quot;&gt;&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 后端代码，node版本</span><br><span class="line">const url = require(&apos;url&apos;);</span><br><span class="line">const http = require(&apos;http&apos;);</span><br><span class="line"></span><br><span class="line">// 启动http服务	</span><br><span class="line">http.createServer((req, res) =&gt; &#123;</span><br><span class="line">	const data = &#123; msg: &apos;success&apos; &#125;;</span><br><span class="line">	const callback = url.parse(req.url, true).query.callback; // 解析url取函数名</span><br><span class="line">	res.writeHead(200); // 返回成功的状态码200</span><br><span class="line">	res.end(`$&#123;callback&#125;($&#123;JSON.stringify(data)&#125;)`); // 向前端返回数据</span><br><span class="line">&#125;).listen(8080, &apos;127.0.0.1&apos;); // 监听来自127.0.0.1:8080端口的请求</span><br></pre></td></tr></table></figure>
+<p>（2）jquery的ajax版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">// 前端代码</span><br><span class="line">$.ajax(&#123;</span><br><span class="line">    url: &apos;http://127.0.0.1:8080&apos;,</span><br><span class="line">    type: &apos;get&apos;,</span><br><span class="line">    dataType: &apos;jsonp&apos;,  // 请求方式为jsonp</span><br><span class="line">    jsonpCallback: &quot;jsonpCallback&quot;,    // 回调函数名</span><br><span class="line">    data: &#123;&#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<p>（3）vue版本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">this.$http.jsonp(&apos;http://127.0.0.1:8080&apos;, &#123;</span><br><span class="line">    params: &#123;&#125;,</span><br><span class="line">    jsonp: &apos;jsonpCallback&apos;</span><br><span class="line">&#125;).then((data) =&gt; &#123;</span><br><span class="line">    console.log(data); </span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></p>
+<p>JSONP的优点和缺点如下：</p>
+<blockquote>
+<p>优点：<br>（1）支持所有浏览器即使是旧版浏览器。<br>（2）可用于k向一些不支持 CORS 的网站请求数据。<br>（3）不需要 XMLHttpRequest 或 ActiveX 的支持，所以不受 XMLHttpRequest 同源策略限制；请求完毕后自动调用 callback 并回传结果。</p>
+</blockquote>
+<blockquote>
+<p>缺点：<br>（1）只支持get请求。<br>（2）无法捕获请求时的连接异常，只能通过超时进行处理。<br>（3）无法解决iframe页面之间的数据通信问题。</p>
+</blockquote>
+<h6 id="2-CORS"><a href="#2-CORS" class="headerlink" title="2. CORS"></a>2. CORS</h6><p>所谓CORS，全称<code>Cross-Origin Resource Sharing</code>跨域资源共享，是一个W3C标准，专门用于解决 AJAX 的跨域问题。它允许浏览器向跨源服务器发出 XMLHttpRequest 请求（如果没有增加 CORS 支持则不能向非同源发送 AJAX 请求，会被浏览器拦截）。</p>
+<p>CORS 需要浏览器和服务器同时支持才生效，前端不需要做任何操作。当浏览器发现发送的请求是跨域请求时，会自动在请求头加上Origin字段表明当前的域（<code>协议+域名+端口号</code>），非简单请求还会先发送一次额外请求进行预检，但这都是浏览器自动完成的，用户和前端并不需要增加操作。而请求之后服务器也会返回一个http响应，<strong>如果返回的响应中带有<code>Access-Control-Allow-Origin</code>，并与上面请求头的Origin相匹配的话，那么即允许跨域</strong>；否则抛出错误被 XMLHttpRequest 的onerror回调函数捕获。注意，这种错误状态码可能是200，所以不能通过状态码去判断。</p>
+<p>所以，可以见得，实现CORS的关键是后端要增加相应的字段。具体见下面的例子（还可以返回更多的头信息如<code>Access-Control-Allow-Credentials</code>等，此处只写了关键的一步）：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">// 服务端代码，node版本</span><br><span class="line">const http = require(&apos;http&apos;);</span><br><span class="line"></span><br><span class="line">// 启动http服务	</span><br><span class="line">http.createServer((req, res) =&gt; &#123;</span><br><span class="line">	res.writeHead(200, &#123;</span><br><span class="line">		&apos;Access-Control-Allow-Origin&apos;: &apos;*&apos;, // 也可以直接写允许请求的域如http://www.baidu.com；*表示所有的域都可以请求，适合公开接口</span><br><span class="line">		&apos;Content-Type&apos;: &apos;text/html;charset=utf-8&apos;,</span><br><span class="line">	&#125;);</span><br><span class="line">	res.end();</span><br><span class="line">&#125;).listen(8080, &apos;127.0.0.1&apos;); // 监听来自127.0.0.1:8080端口的请求</span><br></pre></td></tr></table></figure></p>
+<p>CORS 的优缺点如下：</p>
+<blockquote>
+<p>优点：<br>（1）比 JSONP 更强大，支持所有类型的 HTTP 请求。<br>（2）是W3C标准，大部分浏览器自动完成，只需服务器增加些许字段，非常方便。</p>
+</blockquote>
+<blockquote>
+<p>缺点：仅支持 IE 10 以上等新版浏览器。</p>
+</blockquote>
+<h6 id="3-WebSocket"><a href="#3-WebSocket" class="headerlink" title="3. WebSocket"></a>3. WebSocket</h6><p>WebSocket 是HTML5一种新的协议。它实现了浏览器与服务器的双向通信，同时不受同源策略限制，允许跨域通讯，使用ws://（非加密）和wss://（加密）作为协议前缀。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">// 前端代码，websocket版本</span><br><span class="line">var ws = new WebSocket(&apos;ws://http://127.0.0.1:8080/websocket/chat&apos;); // 创建连接，安全连接用wss</span><br><span class="line"></span><br><span class="line">// 建立连接时调用</span><br><span class="line">ws.onopen = function() &#123;</span><br><span class="line">    console.log(&apos;Connection open ...&apos;);</span><br><span class="line">    ws.send(&apos;Hello WebSocket!&apos;); // 发送消息给服务端 </span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 接收服务器发送过来的消息</span><br><span class="line">ws.onmessage = function() &#123;</span><br><span class="line">    var data = msg.data;</span><br><span class="line">    if(typeof data === String) &#123;</span><br><span class="line">        console.log(data);</span><br><span class="line">    &#125;</span><br><span class="line">    if(data instanceof ArrayBuffer) &#123;</span><br><span class="line">        // 处理ArrayBuffer逻辑...</span><br><span class="line">    &#125;</span><br><span class="line">    ws.close(); // 关闭连接</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">// 关闭时调用</span><br><span class="line">ws.onclose = function() &#123;&#125;</span><br><span class="line"></span><br><span class="line">// 错误处理</span><br><span class="line">ws.onerror = function(err) &#123;&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一般使用WebSocket，我偏向使用socket.io。后者对前者的API进行了封装，使其更易用。前者只支持 IE 10 以上等新版浏览器，而后者兼容了旧版浏览器。所以此处增加个socket.io的例子。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">// 前端代码，socket.io版本</span><br><span class="line">&lt;script src=&quot;./socket.io.js&quot;&gt;&lt;/script&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">var socket = io(&apos;http://127.0.0.1:8080&apos;);</span><br><span class="line"></span><br><span class="line">// 连接成功处理</span><br><span class="line">socket.on(&apos;connect&apos;, function() &#123;</span><br><span class="line">    // 监听接收服务端消息</span><br><span class="line">    socket.on(&apos;message&apos;, function(data)&#123;&#125;);</span><br><span class="line"></span><br><span class="line">    // 服务端关闭调用</span><br><span class="line">    socket.on(&apos;disconnect&apos;, function()&#123;&#125;);</span><br><span class="line">&#125;);</span><br><span class="line"></span><br><span class="line">socket.send(&apos;Hello WebSocket!&apos;); // 发送消息给服务端</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 后端代码，node + socket.io版本</span><br><span class="line">var http = require(&apos;http&apos;);</span><br><span class="line">var socket = require(&apos;socket.io&apos;);</span><br><span class="line"></span><br><span class="line">var server = http.createServer(function(req, res) &#123;</span><br><span class="line">    res.writeHead(200, &#123;</span><br><span class="line">        &apos;Content-type&apos;: &apos;text/html&apos;</span><br><span class="line">    &#125;);</span><br><span class="line">    res.end();</span><br><span class="line">&#125;);</span><br><span class="line">server.listen(&apos;8080&apos;);</span><br><span class="line"></span><br><span class="line">// 监听连接</span><br><span class="line">socket.listen(server).on(&apos;connection&apos;, function(client) &#123;</span><br><span class="line">    // 接收信息</span><br><span class="line">    client.on(&apos;message&apos;, function(data) &#123;</span><br><span class="line">        client.send(data);</span><br><span class="line">    &#125;);</span><br><span class="line"></span><br><span class="line">    // 断开处理</span><br><span class="line">    client.on(&apos;disconnect&apos;, function()&#123;&#125;);</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>优点：<br>（1）不受同源策略的限制，支持与任意服务端通信。<br>（2）可以进行双向通信，服务端也可以主动给客户端推送消息。（传统的 HTTP 只允许客户端发起请求，只能用轮询来了解服务端是否更新信息，效率低浪费资源。）</p>
+</blockquote>
+<h5 id="（二）iframe实现跨域"><a href="#（二）iframe实现跨域" class="headerlink" title="（二）iframe实现跨域"></a>（二）iframe实现跨域</h5><p>iframe的跨域实现，主要有document.domain、location.hash、window.name、postMessage四种方案，下面我们一一解析。</p>
+<h6 id="1-document-domain"><a href="#1-document-domain" class="headerlink" title="1. document.domain"></a>1. document.domain</h6><p>这种方法适合一级域名相同，二级域名不同的情况下使用。域名相关见如下：</p>
+<blockquote>
+<ul>
+<li>顶级域名：<br><code>.com</code>  <code>.net</code>  <code>.edu</code>  <code>.gov</code> 等属于通用顶级域名<br><code>.com.cn</code>  <code>.net.cn</code>  <code>.edu.cn</code> 等属于带有国家地区代码顶级域名，而不是所谓的一级域名</li>
+<li>一级域名（又叫主域名）就是最靠近顶级域名左侧的字段，下面均属于一级域名：<br><code>baidu.com</code>     <code>qq.com</code><br><code>baidu.com.cn</code>  <code>qq.com.cn</code></li>
+<li>二级域名，即最靠近二级域名左侧的字段，二级及以上级别域名称为子域名：<br><code>www.baidu.com</code>     <code>www.qq.com</code><br><code>www.baidu.com.cn</code>  <code>www.qq.com.cn</code></li>
+<li>再接下来从右向左便可依次有三级域名、四级域名、五级域名等，依次类推即可。</li>
+</ul>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">// 主页面域名http://parent.main.com</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    document.domain = &apos;main.com&apos;; // 将两个窗口的域名都设置为一级域名</span><br><span class="line">    let iframe = document.getElementsByTagName(&apos;iframe&apos;)[0];</span><br><span class="line">    let data = iframe.contentWindow.data; // 获取子窗口里的data数据</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 子窗口域名http://child.main.com</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    document.domain = &apos;main.com&apos;; // 将子窗口的域名设置为一级域名</span><br><span class="line">    let data = window.parent.data; // 获取父窗口里的data数据</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>缺点：只支持主域名相同的父子窗口通信。</p>
+</blockquote>
+<h6 id="2-location-hash"><a href="#2-location-hash" class="headerlink" title="2. location.hash"></a>2. location.hash</h6><p><code>location.hash</code>获取的是当前地址栏url的片段识别符，即<code>http://example.com/x.html#fragment</code>里<code>#</code>及后面部分<code>#fragment</code>。由于单纯改变片段识别符并不会导致页面刷新，所以我们可以利用这个特性来让父子窗口互相传值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">// 父窗口修改子窗口的hash</span><br><span class="line">var src = childURL + &apos;#&apos; + data;</span><br><span class="line">document.getElementById(&apos;childIFrame&apos;).src = src;</span><br><span class="line">// 父窗口监听hash改变</span><br><span class="line">window.onhashchange = function() &#123;</span><br><span class="line">  var data = window.location.hash; // 获取子窗口传过来的数据</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>如果两个窗口不在同一个域下， IE、Chrome 不允许子窗口修改 parent.location.hash 的值，所以要借助于一个和父窗口同域的页面来实现修改 hash 值。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 子窗口监听hash改变</span><br><span class="line">window.onhashchange = function() &#123;</span><br><span class="line">  var data = window.location.hash; // 获取父窗口传过来的数据</span><br><span class="line">&#125;</span><br><span class="line">// 子窗口也可以修改父窗口的hash，但需要一个与父窗口同域的代理窗口来修改hash值</span><br><span class="line">let iframe = document.createElement(&apos;iframe&apos;);</span><br><span class="line">iframe.src = parentURL;</span><br><span class="line">iframe.style.display = &apos;none&apos;;</span><br><span class="line">document.body.appendChild(iframe);</span><br><span class="line">iframe.onload = function() &#123;</span><br><span class="line">    parent.parent.location.href = parentURL + &apos;#&apos; + data;</span><br><span class="line">&#125;</span><br><span class="line">// 同域可以直接用下面的写法</span><br><span class="line">// parent.location.href = parentURL + &apos;#&apos; + data;</span><br></pre></td></tr></table></figure></p>
+<blockquote>
+<p>缺点：会改变url上面的#后的值，数据直接暴露在url上。</p>
+</blockquote>
+<h6 id="3-window-name"><a href="#3-window-name" class="headerlink" title="3. window.name"></a>3. window.name</h6><p><code>window.name</code>是窗口的名字，每个子窗口也有自己的<code>window</code>和<code>window.name</code>。只能保存字符串，如果写入的值不是字符串，会自动转成字符串。其特殊之处在于<strong>只要窗口不关闭，这个属性便不会消失</strong>，且储存容量可高达几MB。如果加载了a.com之后写入<code>window.name</code>，窗口不关闭重新加载b.com，此时<code>window.name</code>还是a.com写入的值；窗口关闭<code>window.name</code>清除。</p>
+<p>利用这个特性，我们可以在当前域下创建一个目标域的子窗口，目标域的数据放在<code>window.name</code>，加载完成后再让子窗口跳到一个父域相同的空白代理页（<code>window.name</code>还是不变），获取这个代理页的<code>window.name</code>赋值给父域即可。注意，一定要有<strong>与父域同域</strong>的代理页，否则父域是无法直接获取子窗口的<code>window.name</code>的；另外重新跳转页面会触发onload，要注意避免死循环，可以加个loaded标记。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">// 当前页面，即http://parent.com</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    let isIFrameLoaded = false, </span><br><span class="line">        data = &apos;&apos;,</span><br><span class="line">        iframe = document.createElement(&apos;iframe&apos;);</span><br><span class="line">    iframe.style.display = &apos;none&apos;;</span><br><span class="line">    iframe.src = &apos;http://target.com&apos;;</span><br><span class="line">    document.body.appendChild(iframe);</span><br><span class="line"></span><br><span class="line">    iframe.onload = function() &#123;</span><br><span class="line">        if(!isIFrameLoaded) &#123; // 首次进入读取到window.name，然后刷新到代理页面window.name不变</span><br><span class="line">            isIFrameLoaded = true; // 下面刷新会再次进入onload，此处标记为已完成避免死循环</span><br><span class="line">            iframe.contentWindow.location = &apos;http://parent.com/proxy.html&apos;;</span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            data = iframe.contentWindow.name; // 获取到目标域下的数据</span><br><span class="line">            // 清除iframe</span><br><span class="line">            iframe.contentWindow.document.write(&apos;&apos;);</span><br><span class="line">            iframe.contentWindow.close();</span><br><span class="line">            document.body.removeChild(iframe);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">// 目标数据页面，即http://target.com，将想要提供的数据保存在window.name即可</span><br><span class="line">&lt;script&gt;</span><br><span class="line">    // 注意只能是字符串，若内容有引号根据需要可能要进行转义处理</span><br><span class="line">    window.name = JSON.stringify(&#123;code: 0, result: &#123;name: &apos;Peter&apos;, age: 18&#125;&#125;);</span><br><span class="line">&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>缺点：<br>（1）比较繁琐，需要增加代理页面，还要避免重复循环等。<br>（2）目标数据要放在window.name，格式只能是字符串。<br>（3）缺少请求源控制，任何页面都可以按同样的方式访问到目标页面的数据。</p>
+</blockquote>
+<h6 id="4-window-postMessage"><a href="#4-window-postMessage" class="headerlink" title="4. window.postMessage"></a>4. window.postMessage</h6><p>可以无论<code>hash</code>还是<code>window.name</code>都是利用一些特性来绕个弯达到目的，均属破解。为了解决该问题，HTML5 引入了一个新API跨文档通信 API（Cross-document messaging），<strong>无论两个窗口页面是否同源</strong>，都可以通过调用<code>window.postMessage(content, target)</code>来进行通信。其中target为协议域名端口号，可以设置“ * ”代表向全部窗口发送，也可以指定“ / ”代表当前域。父子窗口通过监听message事件可以获得来源方的这些信息<code>event.origin（源网址）</code>、<code>event.data（携带的数据）</code>、<code>event.source（发送消息方的窗口）</code>。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">// 父窗口，http://origin.com</span><br><span class="line">let iframe = document.createElement(&apos;iframe&apos;);</span><br><span class="line">let targetURL = &apos;http://target.com&apos;;</span><br><span class="line">iframe.src = targetURL;</span><br><span class="line">iframe.style.display = &apos;none&apos;;</span><br><span class="line">document.body.appendChild(iframe);</span><br><span class="line">iframe.onload = function() &#123;</span><br><span class="line">    // 引用子窗口触发其message事件</span><br><span class="line">    iframe.contentWindow.postMessage(&apos;Hello target&apos;, targetURL);</span><br><span class="line">&#125;</span><br><span class="line">// 监听当前窗口的message改变来获取数据</span><br><span class="line">window.addEventListener(&apos;message&apos;, function(event) &#123;</span><br><span class="line">    console.log(event.data); // 获取目标页面的数据 ‘Hello origin’</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">// 子窗口或目标页面，http://target.com</span><br><span class="line">window.addEventListener(&apos;message&apos;, receiveMessage);</span><br><span class="line">function receiveMessage(event) &#123;</span><br><span class="line">    // 检验数据请求方是否为自己的网址</span><br><span class="line">    if (event.origin !== &apos;http://origin.com&apos;) return;</span><br><span class="line"></span><br><span class="line">    if (event.data === &apos;Hello World&apos;) &#123;</span><br><span class="line">        // 引用父窗口触发父窗口的message事件</span><br><span class="line">        event.source.postMessage(&apos;Hello origin&apos;, event.origin);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        console.log(event.data);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>优点：<br>（1）多个窗口（嵌套与否均可）之间可以进行跨域通信和操作window属性等，非常强大，也让跨域存储localStorage成为了可能。<br>（2）可以对来源进行校验，控制是否有权访问。</p>
+</blockquote>
+<h5 id="（三）服务器代理"><a href="#（三）服务器代理" class="headerlink" title="（三）服务器代理"></a>（三）服务器代理</h5><p>最后一类实现跨域的方法是通过架设代理服务器来实现跨域。即<strong>先请求同源服务器，再由同源服务器请求外部服务器。</strong>由于请求的是同源服务器，所以不受浏览器同源策略限制，而服务器之间的请求也没有同源策略这一说，所以以此达到跨域目的。由于对服务器方面了解并不是很深，此处就不做展开，有兴趣可以自行了解下。</p>
+<p>至此，八种跨域的方式终于讲完了（写了好久…吃掉每个小点再讲明白真不容易，可能还有图片ping啥的，先躺倒休息会…），以上全部都是简单案例可根据需求进行优化扩充，如有错漏，欢迎指出!</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JavaScript浅析/" rel="tag"># JavaScript浅析</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/05/JavaScript浅析 -- 闭包/" rel="next" title="JavaScript浅析 -- 闭包">
+                <i class="fa fa-chevron-left"></i> JavaScript浅析 -- 闭包
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/08/10/JavaScript浅析 -- this/" rel="prev" title="JavaScript浅析 -- this">
+                JavaScript浅析 -- this <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="https://avatars1.githubusercontent.com/u/38656908?s=400&u=f8c90313e772d6ef91fe5ce80ebfde0f61982bcd&v=4"
+                alt="罗少雄" />
+            
+              <p class="site-author-name" itemprop="name">罗少雄</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、同源策略"><span class="nav-number">1.</span> <span class="nav-text">一、同源策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、跨域方案"><span class="nav-number">2.</span> <span class="nav-text">二、跨域方案</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#（一）AJAX-请求的跨域"><span class="nav-number">2.0.1.</span> <span class="nav-text">（一）AJAX 请求的跨域</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-JSONP"><span class="nav-number">2.0.1.1.</span> <span class="nav-text">1. JSONP</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-CORS"><span class="nav-number">2.0.1.2.</span> <span class="nav-text">2. CORS</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-WebSocket"><span class="nav-number">2.0.1.3.</span> <span class="nav-text">3. WebSocket</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（二）iframe实现跨域"><span class="nav-number">2.0.2.</span> <span class="nav-text">（二）iframe实现跨域</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#1-document-domain"><span class="nav-number">2.0.2.1.</span> <span class="nav-text">1. document.domain</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#2-location-hash"><span class="nav-number">2.0.2.2.</span> <span class="nav-text">2. location.hash</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#3-window-name"><span class="nav-number">2.0.2.3.</span> <span class="nav-text">3. window.name</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#4-window-postMessage"><span class="nav-number">2.0.2.4.</span> <span class="nav-text">4. window.postMessage</span></a></li></ol></li><li class="nav-item nav-level-5"><a class="nav-link" href="#（三）服务器代理"><span class="nav-number">2.0.3.</span> <span class="nav-text">（三）服务器代理</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user-circle"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">罗少雄</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      <i class="fa fa-user"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      
+    </span>
+  
+
+  
+    <span class="site-pv">
+      <i class="fa fa-eye"></i>
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
